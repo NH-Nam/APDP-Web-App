@@ -1,0 +1,18 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace APDPAssignment.Models
+{
+    public class Account
+    {
+        [Key]
+        public int AccountId { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string Username { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string Password { get; set; }
+    }
+}
