@@ -26,7 +26,7 @@ namespace APDPAssignment.Models
         // Navigation property
         public virtual ICollection<EnrollmentList> EnrollmentLists { get; set; }
         public virtual ICollection<AcademicRecords> AcademicRecords { get; set; }
-
+        public virtual ICollection<Schedule> Schedules { get; set; }
 
     }
 }

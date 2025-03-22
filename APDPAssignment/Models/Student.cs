@@ -25,6 +25,8 @@ namespace APDPAssignment.Models
         public string StudentGender { get; set; }
 
         // Navigation property
-        public virtual ICollection<Account> Accounts { get; set; } = new List<Account>();
+        public virtual Account Account { get; set; }
+        public virtual ICollection<AcademicRecords> AcademicRecords { get; set; }
+        public virtual ICollection<EnrollmentList> EnrollmentLists { get; set; }
     }
 }

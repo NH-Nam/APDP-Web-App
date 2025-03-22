@@ -12,6 +12,7 @@ namespace APDPAssignment.Models
         public string AdminName { get; set; }
 
         // Navigation property
-        public virtual ICollection<Account> Accounts { get; set; }
+        public virtual Account Account { get; set; }
+
     }
 }
