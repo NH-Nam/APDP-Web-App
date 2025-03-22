@@ -10,5 +10,8 @@ namespace APDPAssignment.Models
         [Required]
         [StringLength(50)]
         public string ClassroomName { get; set; }
+
+        // Navigation property
+        public virtual ICollection<Schedule> Schedules { get; set; }
     }
 }

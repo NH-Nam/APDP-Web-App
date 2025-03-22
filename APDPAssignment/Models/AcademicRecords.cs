@@ -14,5 +14,17 @@ namespace APDPAssignment.Models
         [Required]
         [StringLength(50)]
         public string status { get; set; }
+
+        // Foreign key for Course
+        public int CourseId { get; set; }
+        public Course Course { get; set; }
+
+        // Foreign key for Student
+        public int StudentId { get; set; }
+        public Student Student { get; set; }
+
+        // Foreign key for Semester
+        public int SemesterId { get; set; }
+        public Semester Semester { get; set; }
     }
 }

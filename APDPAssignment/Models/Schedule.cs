@@ -18,5 +18,21 @@ namespace APDPAssignment.Models
         [Required]
         [DataType(DataType.Time)]
         public TimeSpan EndTime { get; set; }
+
+        // Foreign keys for Classroom
+        public int ClassroomId { get; set; }
+        public Classroom Classroom { get; set; }
+
+        // Foreign keys for Course
+        public int CourseId { get; set; }
+        public Course Course { get; set; }
+
+        // Foreign keys for Semester
+        public int SemesterId { get; set; }
+        public Semester Semester { get; set; }
+
+        // Foreign keys for Lecturer
+        public int LecturerId { get; set; }
+        public Lecturer Lecturer { get; set; }
     }
 }

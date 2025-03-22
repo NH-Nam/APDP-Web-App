@@ -18,5 +18,10 @@ namespace APDPAssignment.Models
 
         [StringLength(50)]
         public string LecturerPhone { get; set; }
+
+        
+        // Navigation property
+        public virtual ICollection<Account> Accounts { get; set; }
+        public virtual ICollection<Schedule> Schedules { get; set; }
     }
 }

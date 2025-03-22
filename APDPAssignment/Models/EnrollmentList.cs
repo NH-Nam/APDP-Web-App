@@ -9,6 +9,13 @@ namespace APDPAssignment.Models
 
         [Required]
         [DataType(DataType.Date)]
-        public string EnrollmentDate { get; set; }
+        public string EnrollmentDate { get; set; } 
+           
+        public int StudentId { get; set; }
+        public Student Student { get; set; }
+
+        // Foreign key for Course
+        public int CourseId { get; set; }
+        public Course Course { get; set; }
     }
 }

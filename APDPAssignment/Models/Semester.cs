@@ -22,5 +22,8 @@ namespace APDPAssignment.Models
         [Required]
         [StringLength(50)]
         public string AcademicYear { get; set; }
+
+        // Navigation property 
+        public virtual ICollection<Course> Courses { get; set; }
     }
 }

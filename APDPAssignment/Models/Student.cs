@@ -23,5 +23,8 @@ namespace APDPAssignment.Models
         public DateTime StudentDoB { get; set; }
 
         public string StudentGender { get; set; }
+
+        // Navigation property
+        public virtual ICollection<Account> Accounts { get; set; } = new List<Account>();
     }
 }

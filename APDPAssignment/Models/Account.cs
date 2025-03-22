@@ -14,5 +14,21 @@ namespace APDPAssignment.Models
         [Required]
         [StringLength(50)]
         public string Password { get; set; }
+
+        // Foreign key for Student
+        public int StudentId { get; set; }
+        public virtual Student Student { get; set; }
+
+        // Foreign key for Admin
+        public int AdminId { get; set; }
+        public virtual Admin Admin { get; set; }
+
+        // Foreign key for Lecturer
+        public int LecturerId { get; set; }
+        public virtual Lecturer Lecturer { get; set; }
+
+        // Foreign key for Roles
+        public int RoleId { get; set; }
+        public virtual Roles Role { get; set; }
     }
 }

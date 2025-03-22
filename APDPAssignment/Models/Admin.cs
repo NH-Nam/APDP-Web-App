@@ -10,5 +10,8 @@ namespace APDPAssignment.Models
         [Required]
         [StringLength(50)]
         public string AdminName { get; set; }
+
+        // Navigation property
+        public virtual ICollection<Account> Accounts { get; set; }
     }
 }
