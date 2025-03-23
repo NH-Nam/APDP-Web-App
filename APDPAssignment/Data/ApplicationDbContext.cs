@@ -179,6 +179,13 @@ namespace APDPAssignment.Data
                 .HasMany(s => s.AcademicRecords)
                 .WithOne(ar => ar.Student)
                 .HasForeignKey(ar => ar.StudentId);
+
+            // Roles Id and Names
+            modelBuilder.Entity<Roles>().HasData(
+                new Roles { RoleId = 1, RoleName = "Admin" },
+                new Roles { RoleId = 2, RoleName = "Lecturer" },
+                new Roles { RoleId = 3, RoleName = "Student" }
+            );
         }
     }
 }

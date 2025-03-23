@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APDPAssignment.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250323060926_InitialCreate")]
+    [Migration("20250323122003_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -234,6 +234,23 @@ namespace APDPAssignment.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 1,
+                            RoleName = "Admin"
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            RoleName = "Lecturer"
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            RoleName = "Student"
+                        });
                 });
 
             modelBuilder.Entity("APDPAssignment.Models.Schedule", b =>

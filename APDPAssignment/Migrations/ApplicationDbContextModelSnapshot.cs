@@ -231,6 +231,23 @@ namespace APDPAssignment.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 1,
+                            RoleName = "Admin"
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            RoleName = "Lecturer"
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            RoleName = "Student"
+                        });
                 });
 
             modelBuilder.Entity("APDPAssignment.Models.Schedule", b =>
