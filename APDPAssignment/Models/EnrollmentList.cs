@@ -18,9 +18,5 @@ namespace APDPAssignment.Models
         public int CourseId { get; set; }
         public Course Course { get; set; }
 
-        // Foreign key for Semester
-        public int SemesterId { get; set; }
-        public Semester Semester { get; set; }
-
     }
 }

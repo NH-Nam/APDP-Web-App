@@ -5,11 +5,10 @@ namespace APDPAssignment.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-
         }
-        
+
         public DbSet<AcademicRecords> AcademicRecords { get; set; }
         public DbSet<Account> Account { get; set; }
         public DbSet<Admin> Admin { get; set; }
@@ -32,32 +31,40 @@ namespace APDPAssignment.Data
             modelBuilder.Entity<Account>()
                 .HasOne(a => a.Admin)
                 .WithOne(ad => ad.Account)
-                .HasForeignKey<Admin>(ad => ad.AdminId);
-
-            modelBuilder.Entity<Account>()
-                .HasOne(a => a.Lecturer)
-                .WithOne(l => l.Account)
-                .HasForeignKey<Lecturer>(l => l.LecturerId);
+                .HasForeignKey<Account>(a => a.AdminId);
 
             modelBuilder.Entity<Account>()
                 .HasOne(a => a.Role)
                 .WithMany(r => r.Accounts)
                 .HasForeignKey(a => a.RoleId);
 
+            modelBuilder.Entity<Account>()
+                .HasOne(a => a.Lecturer)
+                .WithOne(l => l.Account)
+                .HasForeignKey<Account>(a => a.LecturerId);
+
+            modelBuilder.Entity<Admin>()
+                .HasOne(ad => ad.Account)
+                .WithOne(a => a.Admin)
+                .HasForeignKey<Admin>(a => a.AdminId);
+
             modelBuilder.Entity<AcademicRecords>()
                 .HasOne(ar => ar.Course)
                 .WithMany(c => c.AcademicRecords)
-                .HasForeignKey(ar => ar.CourseId);
+                .HasForeignKey(ar => ar.CourseId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<AcademicRecords>()
                 .HasOne(ar => ar.Student)
                 .WithMany(s => s.AcademicRecords)
-                .HasForeignKey(ar => ar.StudentId);
+                .HasForeignKey(ar => ar.StudentId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<AcademicRecords>()
                 .HasOne(ar => ar.Semester)
                 .WithMany(s => s.AcademicRecords)
-                .HasForeignKey(ar => ar.SemesterId);
+                .HasForeignKey(ar => ar.SemesterId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Classroom>()
                 .HasMany(c => c.Schedules)
@@ -82,7 +89,8 @@ namespace APDPAssignment.Data
             modelBuilder.Entity<Course>()
                 .HasOne(c => c.Semester)
                 .WithMany(se => se.Courses)
-                .HasForeignKey(c => c.SemesterId);
+                .HasForeignKey(c => c.SemesterId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Course>()
                 .HasOne(c => c.Lecturer)
@@ -92,7 +100,8 @@ namespace APDPAssignment.Data
             modelBuilder.Entity<EnrollmentList>()
                 .HasOne(e => e.Student)
                 .WithMany(s => s.EnrollmentLists)
-                .HasForeignKey(e => e.StudentId);
+                .HasForeignKey(e => e.StudentId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<EnrollmentList>()
                 .HasOne(e => e.Course)
@@ -116,7 +125,7 @@ namespace APDPAssignment.Data
 
             modelBuilder.Entity<Roles>()
                 .HasMany(r => r.Accounts)
-                .WithOne(Schedule => Schedule.Role)
+                .WithOne(a => a.Role)
                 .HasForeignKey(a => a.RoleId);
 
             modelBuilder.Entity<Schedule>()
@@ -132,12 +141,14 @@ namespace APDPAssignment.Data
             modelBuilder.Entity<Schedule>()
                 .HasOne(s => s.Semester)
                 .WithMany(se => se.Schedules)
-                .HasForeignKey(s => s.SemesterId);
+                .HasForeignKey(s => s.SemesterId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Schedule>()
                 .HasOne(s => s.Lecturer)
                 .WithMany(l => l.Schedules)
-                .HasForeignKey(s => s.LecturerId);
+                .HasForeignKey(s => s.LecturerId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Semester>()
                 .HasMany(se => se.Courses)
@@ -163,8 +174,11 @@ namespace APDPAssignment.Data
                 .HasMany(s => s.EnrollmentLists)
                 .WithOne(e => e.Student)
                 .HasForeignKey(e => e.StudentId);
+
+            modelBuilder.Entity<Student>()
+                .HasMany(s => s.AcademicRecords)
+                .WithOne(ar => ar.Student)
+                .HasForeignKey(ar => ar.StudentId);
         }
-
-
     }
 }
