@@ -12,17 +12,7 @@ namespace APDPAssignment.Repositories
             _context = context;
         }
 
-        public IEnumerable<Lecturer> GetAllLecturers()
-        {
-            try
-            {
-                return _context.Lecturer.ToList();
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
+        public IEnumerable<Lecturer> Lecturers => _context.Lecturer.ToList();
 
         public Lecturer GetLecturerById(int lecturerId)
         {
@@ -41,7 +31,8 @@ namespace APDPAssignment.Repositories
             try
             {
                 _context.Lecturer.Add(lecturer);
-                return _context.SaveChanges() > 0;
+                _context.SaveChanges();
+                return true;
             }
             catch (Exception)
             {
@@ -54,7 +45,8 @@ namespace APDPAssignment.Repositories
             try
             {
                 _context.Lecturer.Update(lecturer);
-                return _context.SaveChanges() > 0;
+                _context.SaveChanges();
+                return true;
             }
             catch (Exception)
             {
@@ -68,7 +60,33 @@ namespace APDPAssignment.Repositories
             {
                 var lecturer = _context.Lecturer.Find(lecturerId);
                 _context.Lecturer.Remove(lecturer);
-                return _context.SaveChanges() > 0;
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        // New method to update academic record for a student in a course
+        public bool UpdateStudentScore(int studentId, int courseId, string grade, string status)
+        {
+            try
+            {
+                var academicRecord = _context.AcademicRecords
+                    .FirstOrDefault(ar => ar.StudentId == studentId && ar.CourseId == courseId);
+
+                if (academicRecord == null)
+                {
+                    return false;
+                }
+
+                academicRecord.grade = grade;
+                academicRecord.status = status;
+                _context.AcademicRecords.Update(academicRecord);
+                _context.SaveChanges();
+                return true;
             }
             catch (Exception)
             {
