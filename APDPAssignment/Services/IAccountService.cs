@@ -4,8 +4,9 @@ namespace APDPAssignment.Services
 {
     public interface IAccountService
     {
-        Task RegisterStudentAsync(Student student);
-        Task RegisterLecturerAsync(Lecturer lecturer);
-        Task RegisterAdminAsync(Admin admin);
+        bool RegisterStudentAsync(Student student);
+        bool RegisterLecturerAsync(Lecturer lecturer);
+        bool RegisterAdminAsync(Admin admin);
+        Account AuthenticateUser(string username, string password);
     }
 }

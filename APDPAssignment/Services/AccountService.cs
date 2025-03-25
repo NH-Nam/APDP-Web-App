@@ -22,23 +22,24 @@ namespace APDPAssignment.Services
             _accountRepository = accountRepository;
         }
 
-        public async Task RegisterStudentAsync(Student student)
+        public bool RegisterStudent(Student student)
         {
             try
             {
-                student.Account.RoleId = 3;
+                student.Account.RoleId = 3; 
                 if (_accountRepository.AddAccount(student.Account))
                 {
                     _studentRepository.AddStudent(student);
                 }
+                return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                return false;
             }
         }
 
-        public async Task RegisterLecturerAsync(Lecturer lecturer)
+        public bool RegisterLecturer(Lecturer lecturer)
         {
             try
             {
@@ -47,14 +48,15 @@ namespace APDPAssignment.Services
                 {
                     _lecturerRepository.AddLecturer(lecturer);
                 }
+                return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                return false;
             }
         }
 
-        public async Task RegisterAdminAsync(Admin admin)
+        public bool RegisterAdmin(Admin admin)
         {
             try
             {
@@ -63,11 +65,22 @@ namespace APDPAssignment.Services
                 {
                     _adminRepository.AddAdmin(admin);
                 }
+                return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                return false;
             }
+        }
+
+        public Account AuthenticateUser(string username, string password)
+        {
+            var account = _accountRepository.GetAccountByUsername(username);
+            if (account != null && account.Password == password)
+            {
+                return account;
+            }
+            return null;
         }
     }
 }
