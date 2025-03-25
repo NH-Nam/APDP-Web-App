@@ -17,6 +17,30 @@ namespace APDPAssignment.Services
             _enrollmentListRepository = enrollmentListRepository;
         }
 
+        public IEnumerable<Course> GetAllCourses()
+        {
+            try
+            {
+                return _courseRepository.GetAllCourses();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public Course GetCourseById(int courseId)
+        {
+            try
+            {
+                return _courseRepository.GetCourseById(courseId);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public bool AddCourse(Course course)
         {
             try
