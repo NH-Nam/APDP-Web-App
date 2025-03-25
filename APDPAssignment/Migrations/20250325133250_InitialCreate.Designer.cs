@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APDPAssignment.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250323122003_InitialCreate")]
+    [Migration("20250325133250_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -71,10 +71,15 @@ namespace APDPAssignment.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountId"));
 
-                    b.Property<int>("AdminId")
+                    b.Property<int?>("AdminId")
                         .HasColumnType("int");
 
-                    b.Property<int>("LecturerId")
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("LecturerId")
                         .HasColumnType("int");
 
                     b.Property<string>("Password")
@@ -85,7 +90,7 @@ namespace APDPAssignment.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StudentId")
+                    b.Property<int?>("StudentId")
                         .HasColumnType("int");
 
                     b.Property<string>("Username")
