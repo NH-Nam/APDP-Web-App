@@ -35,7 +35,7 @@ namespace APDPAssignment.Controllers
                     var result = _accountService.Register(username, email, password, fullname, role);
                     if (result)
                     {
-                        return RedirectToAction("Login", "Account");
+                        return View("Login");
                     }
                     ModelState.AddModelError("", "Registration failed.");
                 }
