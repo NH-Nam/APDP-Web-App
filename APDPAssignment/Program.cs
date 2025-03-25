@@ -1,5 +1,6 @@
 using APDPAssignment.Data;
 using APDPAssignment.Repositories;
+using APDPAssignment.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,9 @@ builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddScoped<IRolesRepository, RolesRepository>();
 builder.Services.AddScoped<IAcademicRecordsRepository, AcademicRecordsRepository>();
 builder.Services.AddScoped<ISemesterRepository, SemesterRepository>();
+
+builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 
 var app = builder.Build();
