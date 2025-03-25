@@ -82,5 +82,17 @@ namespace APDPAssignment.Services
             }
             return null;
         }
+
+        public string GetUserRole(Account account)
+        {
+            try
+            {
+                return account.Role.RoleName;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
     }
 }

@@ -8,5 +8,6 @@ namespace APDPAssignment.Services
         bool RegisterLecturerAsync(Lecturer lecturer);
         bool RegisterAdminAsync(Admin admin);
         Account AuthenticateUser(string username, string password);
+        string GetUserRole(Account account);
     }
 }
