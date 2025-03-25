@@ -4,10 +4,7 @@ namespace APDPAssignment.Services
 {
     public interface IAccountService
     {
-        bool RegisterStudent(Student student);
-        bool RegisterLecturer(Lecturer lecturer);
-        bool RegisterAdmin(Admin admin);
-        Account AuthenticateUser(string username, string password);
-        string GetUserRole(Account account);
+        bool Register(string username, string email, string password, string role,
+            string firstName, string lastName, string phoneNumber, DateTime dob, string gender);
     }
 }

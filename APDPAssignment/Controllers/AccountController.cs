@@ -14,57 +14,35 @@ namespace APDPAssignment.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Login(string username, string password)
-        {
-            var account = _accountService.AuthenticateUser(username, password);
-            if (account != null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            else
-            {
-                // Handle login failure
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                return View();
-            }
-        }
-
-        [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Register(string username, string password, string role)
+        public IActionResult Register(string username, string email, string password, string confirmPassword, string role, string firstName, string lastName, string phoneNumber, DateTime dob, string gender)
         {
-            var account = new Account
+            try
             {
-                Username = username,
-                Password = password
-            };
+                if (ModelState.IsValid)
+                {
+                    if (password != confirmPassword)
+                    {
+                        ModelState.AddModelError("", "Passwords do not match.");
+                        return View();
+                    }
 
-            bool success = role switch
-            {
-                "Student" => _accountService.RegisterStudent(new Student { Account = account }),
-                "Lecturer" => _accountService.RegisterLecturer(new Lecturer { Account = account }),
-                "Admin" => _accountService.RegisterAdmin(new Admin { Account = account }),
-                _ => false
-            };
-
-            if (success)
-            {
-                return RedirectToAction("Login");
+                    var result = _accountService.Register(username, email, password, role, firstName, lastName, phoneNumber, dob, gender);
+                    if (result)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    ModelState.AddModelError("", "Registration failed.");
+                }
+                return View();
             }
-            else
+            catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, "Registration failed.");
                 return View();
             }
         }
