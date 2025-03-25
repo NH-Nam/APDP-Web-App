@@ -168,7 +168,7 @@ namespace APDPAssignment.Data
             modelBuilder.Entity<Student>()
                 .HasOne(s => s.Account)
                 .WithOne(a => a.Student)
-                .HasForeignKey<Student>(s => s.StudentId);
+                .HasForeignKey<Account>(a => a.StudentId);
 
             modelBuilder.Entity<Student>()
                 .HasMany(s => s.EnrollmentLists)

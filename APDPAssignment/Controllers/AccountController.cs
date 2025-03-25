@@ -20,7 +20,7 @@ namespace APDPAssignment.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(string username, string email, string password, string confirmPassword, string role, string firstName, string lastName, string phoneNumber, DateTime dob, string gender)
+        public IActionResult Register(string username, string email, string password, string confirmPassword, string fullname, string role)
         {
             try
             {
@@ -32,10 +32,10 @@ namespace APDPAssignment.Controllers
                         return View();
                     }
 
-                    var result = _accountService.Register(username, email, password, role, firstName, lastName, phoneNumber, dob, gender);
+                    var result = _accountService.Register(username, email, password, fullname, role);
                     if (result)
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Login", "Account");
                     }
                     ModelState.AddModelError("", "Registration failed.");
                 }
@@ -43,6 +43,7 @@ namespace APDPAssignment.Controllers
             }
             catch (Exception ex)
             {
+                ModelState.AddModelError("", "An error occurred: " + ex.Message);
                 return View();
             }
         }

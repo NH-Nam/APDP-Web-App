@@ -69,6 +69,7 @@ namespace APDPAssignment.Repositories
 
         private int GetRoleId(string role)
         {
+            // Implement logic to get the role ID based on the role name
             var roleEntity = _context.Roles.FirstOrDefault(r => r.RoleName == role);
             return roleEntity?.RoleId ?? 0;
         }

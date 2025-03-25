@@ -1,38 +1,54 @@
-﻿@*
-*@
-@{
+﻿@{
     ViewData["Title"] = "Register";
 }
 
-<h1> Register Page </h1>
+<h1 class="text-center">Register</h1>
 
-<form asp-controller="Account" asp-action="Register" method="post">
-    <div class="form-group">
-        <label for="Username">Username</label>
-        <input type="text" class="form-control" id="Username" name="username" placeholder="Enter Username">
-    </div>
-    <div class="form-group">
-        <label for="Password">Password</label>
-        <input type="password" class="form-control" id="Password" name="password" placeholder="Enter Password">
-    </div>
-    <div class="form-group">
-        <label for="Role">Role</label>
-        <select class="form-control" id="Role" name="role">
-            <option value="Student">Student</option>
-            <option value="Lecturer">Lecturer</option>
-            <option value="Admin">Admin</option>
-        </select>
-    </div>
-    <div class="form-group mt-2">
-        <button type="submit" class="btn btn-primary">Register</button>
-    </div>
-</form>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form asp-controller="Account" asp-action="Register" method="post">
+                <div class="form-group mb-3">
+                    <label for="Username">Username</label>
+                    <input type="text" class="form-control" id="Username" name="username" placeholder="Enter Username" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="Email">Email</label>
+                    <input type="email" class="form-control" id="Email" name="email" placeholder="Enter Email" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="Password">Password</label>
+                    <input type="password" class="form-control" id="Password" name="password" placeholder="Enter Password" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="ConfirmPassword">Confirm Password</label>
+                    <input type="password" class="form-control" id="ConfirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="FullName">Full Name</label>
+                    <input type="text" class="form-control" id="FullName" name="fullname" placeholder="Enter Full Name" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="Role">Role</label>
+                    <select class="form-control" id="Role" name="role" required>
+                        <option value="Student">Student</option>
+                        <option value="Lecturer">Lecturer</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+                <div class="form-group mt-4">
+                    <button type="submit" class="btn btn-primary w-100">Register</button>
+                </div>
+            </form>
 
-@if (!ViewData.ModelState.IsValid)
-{
-    <div class="alert alert-danger">
-        <p class="text-danger">
-            Registration failed.
-        </p>
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger mt-3">
+                    <p class="text-danger">
+                        Registration failed. Please check the form and try again.
+                    </p>
+                </div>
+            }
+        </div>
     </div>
-}
+</div>

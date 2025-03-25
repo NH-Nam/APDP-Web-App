@@ -17,12 +17,12 @@ namespace APDPAssignment.Models
         public string StudentEmail { get; set; }
 
         [StringLength(50)]
-        public string StudentPhone { get; set; }
+        public string? StudentPhone { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime StudentDoB { get; set; }
 
-        public string StudentGender { get; set; }
+        public string? StudentGender { get; set; }
 
         // Navigation property
         public virtual Account Account { get; set; }
