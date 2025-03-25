@@ -12,88 +12,65 @@ namespace APDPAssignment.Repositories
             _context = context;
         }
 
-        public IEnumerable<Account> GetAllAccounts()
+        public bool Register(string username, string email, string password, string role,
+            string firstName, string lastName, string phoneNumber, DateTime dob, string gender)
         {
-            try
+            var account = new Account
             {
-                return _context.Account.ToList();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return null;
-            }
-        }
+                Username = username,
+                Email = email,
+                Password = password,
+                RoleId = GetRoleId(role)
+            };
 
-        public Account GetAccountById(int id)
-        {
-            try
+            if (role == "Student")
             {
-                return _context.Account.Find(id);
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
-        }
-
-        public bool AddAccount(Account account)
-        {
-            try
-            {
-                _context.Account.Add(account);
+                var student = new Student
+                {
+                    StudentName = $"{firstName} {lastName}",
+                    StudentEmail = email,
+                    StudentPhone = phoneNumber,
+                    StudentDoB = dob,
+                    StudentGender = gender
+                };
+                _context.Student.Add(student);
                 _context.SaveChanges();
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return false;
-            }
-        }
 
-        public bool UpdateAccount(Account account)
-        {
-            try
+                account.StudentId = student.StudentId;
+            }
+            else if (role == "Admin")
             {
-                _context.Account.Update(account);
+                var admin = new Admin
+                {
+                    AdminName = $"{firstName} {lastName}"
+                };
+                _context.Admin.Add(admin);
                 _context.SaveChanges();
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return false;
-            }
-        }
 
-        public bool DeleteAccount(int accountId)
-        {
-            var account = _context.Account.Find(accountId);
-            try
+                account.AdminId = admin.AdminId;
+            }
+            else if (role == "Lecturer")
             {
-                _context.Account.Remove(account);
+                var lecturer = new Lecturer
+                {
+                    LecturerName = $"{firstName} {lastName}",
+                    LecturerEmail = email,
+                    LecturerPhone = phoneNumber
+                };
+                _context.Lecturer.Add(lecturer);
                 _context.SaveChanges();
-                return true;
+
+                account.LecturerId = lecturer.LecturerId;
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return false;
-            }
+
+            _context.Account.Add(account);
+            return _context.SaveChanges() > 0;
         }
 
-        public Account GetAccountByUsername(string username)
+        private int GetRoleId(string role)
         {
-            try
-            {
-                return _context.Account.Where(a => a.Username == username).FirstOrDefault();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return null;
-            }
+            var roleEntity = _context.Roles.FirstOrDefault(r => r.RoleName == role);
+            return roleEntity?.RoleId ?? 0;
         }
     }
 }
