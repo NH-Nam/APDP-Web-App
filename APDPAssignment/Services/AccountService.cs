@@ -24,31 +24,49 @@ namespace APDPAssignment.Services
 
         public async Task RegisterStudentAsync(Student student)
         {
-            student.Account.RoleId = 3;
-
-            if (_accountRepository.AddAccount(student.Account))
+            try
             {
-                _studentRepository.AddStudent(student);
+                student.Account.RoleId = 3;
+                if (_accountRepository.AddAccount(student.Account))
+                {
+                    _studentRepository.AddStudent(student);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
 
         public async Task RegisterLecturerAsync(Lecturer lecturer)
         {
-            lecturer.Account.RoleId = 2;
-
-            if (_accountRepository.AddAccount(lecturer.Account))
+            try
             {
-                _lecturerRepository.AddLecturer(lecturer);
+                lecturer.Account.RoleId = 2;
+                if (_accountRepository.AddAccount(lecturer.Account))
+                {
+                    _lecturerRepository.AddLecturer(lecturer);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
 
         public async Task RegisterAdminAsync(Admin admin)
         {
-            admin.Account.RoleId = 1;
-
-            if (_accountRepository.AddAccount(admin.Account))
+            try
             {
-                _adminRepository.AddAdmin(admin);
+                admin.Account.RoleId = 1;
+                if (_accountRepository.AddAccount(admin.Account))
+                {
+                    _adminRepository.AddAdmin(admin);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
     }
