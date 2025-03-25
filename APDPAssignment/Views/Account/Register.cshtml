@@ -1,0 +1,38 @@
+﻿@*
+*@
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1> Register Page </h1>
+
+<form asp-controller="Account" asp-action="Register" method="post">
+    <div class="form-group">
+        <label for="Username">Username</label>
+        <input type="text" class="form-control" id="Username" name="username" placeholder="Enter Username">
+    </div>
+    <div class="form-group">
+        <label for="Password">Password</label>
+        <input type="password" class="form-control" id="Password" name="password" placeholder="Enter Password">
+    </div>
+    <div class="form-group">
+        <label for="Role">Role</label>
+        <select class="form-control" id="Role" name="role">
+            <option value="Student">Student</option>
+            <option value="Lecturer">Lecturer</option>
+            <option value="Admin">Admin</option>
+        </select>
+    </div>
+    <div class="form-group mt-2">
+        <button type="submit" class="btn btn-primary">Register</button>
+    </div>
+</form>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <p class="text-danger">
+            Registration failed.
+        </p>
+    </div>
+}

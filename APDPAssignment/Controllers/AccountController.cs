@@ -25,7 +25,6 @@ namespace APDPAssignment.Controllers
             var account = _accountService.AuthenticateUser(username, password);
             if (account != null)
             {
-                // Handle successful login (e.g., set authentication state, redirect)
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -61,12 +60,10 @@ namespace APDPAssignment.Controllers
 
             if (success)
             {
-                // Handle successful registration (e.g., redirect to login)
                 return RedirectToAction("Login");
             }
             else
             {
-                // Handle registration failure
                 ModelState.AddModelError(string.Empty, "Registration failed.");
                 return View();
             }
