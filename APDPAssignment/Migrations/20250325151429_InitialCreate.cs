@@ -107,7 +107,8 @@ namespace APDPAssignment.Migrations
                 columns: table => new
                 {
                     AdminId = table.Column<int>(type: "int", nullable: false),
-                    AdminName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    AdminName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    AdminEmail = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {

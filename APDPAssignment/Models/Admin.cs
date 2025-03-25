@@ -11,6 +11,10 @@ namespace APDPAssignment.Models
         [StringLength(50)]
         public string AdminName { get; set; }
 
+        [Required]
+        [StringLength(50)]
+        public string AdminEmail { get; set; }
+
         // Navigation property
         public virtual Account Account { get; set; }
 

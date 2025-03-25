@@ -111,6 +111,11 @@ namespace APDPAssignment.Migrations
                     b.Property<int>("AdminId")
                         .HasColumnType("int");
 
+                    b.Property<string>("AdminEmail")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("AdminName")
                         .IsRequired()
                         .HasMaxLength(50)

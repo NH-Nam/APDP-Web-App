@@ -42,6 +42,12 @@ namespace APDPAssignment.Services
             }
         }
 
+        public bool Login(string username, string password)
+        {
+            var account = _context.Account.SingleOrDefault(a => a.Username == username && a.Password == password);
+            return account != null;
+        }
+
         private int GetRoleId(string role)
         {
             switch (role)

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APDPAssignment.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250325141102_InitialCreate")]
+    [Migration("20250325151429_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -113,6 +113,11 @@ namespace APDPAssignment.Migrations
                 {
                     b.Property<int>("AdminId")
                         .HasColumnType("int");
+
+                    b.Property<string>("AdminEmail")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("AdminName")
                         .IsRequired()
