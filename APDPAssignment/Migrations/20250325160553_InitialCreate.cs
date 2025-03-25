@@ -56,23 +56,6 @@ namespace APDPAssignment.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Student",
-                columns: table => new
-                {
-                    StudentId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StudentName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    StudentEmail = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    StudentPhone = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    StudentDoB = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StudentGender = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Student", x => x.StudentId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Account",
                 columns: table => new
                 {
@@ -95,11 +78,6 @@ namespace APDPAssignment.Migrations
                         principalTable: "Roles",
                         principalColumn: "RoleId",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Account_Student_StudentId",
-                        column: x => x.StudentId,
-                        principalTable: "Student",
-                        principalColumn: "StudentId");
                 });
 
             migrationBuilder.CreateTable(
@@ -136,6 +114,28 @@ namespace APDPAssignment.Migrations
                     table.ForeignKey(
                         name: "FK_Lecturer_Account_LecturerId",
                         column: x => x.LecturerId,
+                        principalTable: "Account",
+                        principalColumn: "AccountId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Student",
+                columns: table => new
+                {
+                    StudentId = table.Column<int>(type: "int", nullable: false),
+                    StudentName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    StudentEmail = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    StudentPhone = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    StudentDoB = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StudentGender = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Student", x => x.StudentId);
+                    table.ForeignKey(
+                        name: "FK_Student_Account_StudentId",
+                        column: x => x.StudentId,
                         principalTable: "Account",
                         principalColumn: "AccountId",
                         onDelete: ReferentialAction.Cascade);
@@ -305,13 +305,6 @@ namespace APDPAssignment.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Account_StudentId",
-                table: "Account",
-                column: "StudentId",
-                unique: true,
-                filter: "[StudentId] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Course_LecturerId",
                 table: "Course",
                 column: "LecturerId");
@@ -368,6 +361,9 @@ namespace APDPAssignment.Migrations
                 name: "Schedules");
 
             migrationBuilder.DropTable(
+                name: "Student");
+
+            migrationBuilder.DropTable(
                 name: "Classroom");
 
             migrationBuilder.DropTable(
@@ -384,9 +380,6 @@ namespace APDPAssignment.Migrations
 
             migrationBuilder.DropTable(
                 name: "Roles");
-
-            migrationBuilder.DropTable(
-                name: "Student");
         }
     }
 }

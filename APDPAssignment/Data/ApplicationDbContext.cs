@@ -26,12 +26,12 @@ namespace APDPAssignment.Data
             modelBuilder.Entity<Account>()
                 .HasOne(a => a.Student)
                 .WithOne(s => s.Account)
-                .HasForeignKey<Account>(a => a.StudentId);
+                .HasForeignKey<Student>(s => s.StudentId);
 
             modelBuilder.Entity<Account>()
                 .HasOne(a => a.Admin)
                 .WithOne(ad => ad.Account)
-                .HasForeignKey<Account>(a => a.AdminId);
+                .HasForeignKey<Admin>(ad => ad.AdminId);
 
             modelBuilder.Entity<Account>()
                 .HasOne(a => a.Role)
@@ -41,12 +41,7 @@ namespace APDPAssignment.Data
             modelBuilder.Entity<Account>()
                 .HasOne(a => a.Lecturer)
                 .WithOne(l => l.Account)
-                .HasForeignKey<Account>(a => a.LecturerId);
-
-            modelBuilder.Entity<Admin>()
-                .HasOne(ad => ad.Account)
-                .WithOne(a => a.Admin)
-                .HasForeignKey<Admin>(a => a.AdminId);
+                .HasForeignKey<Lecturer>(l => l.LecturerId);
 
             modelBuilder.Entity<AcademicRecords>()
                 .HasOne(ar => ar.Course)
@@ -118,11 +113,6 @@ namespace APDPAssignment.Data
                 .WithOne(c => c.Lecturer)
                 .HasForeignKey(c => c.LecturerId);
 
-            modelBuilder.Entity<Lecturer>()
-                .HasOne(l => l.Account)
-                .WithOne(a => a.Lecturer)
-                .HasForeignKey<Lecturer>(l => l.LecturerId);
-
             modelBuilder.Entity<Roles>()
                 .HasMany(r => r.Accounts)
                 .WithOne(a => a.Role)
@@ -164,11 +154,6 @@ namespace APDPAssignment.Data
                 .HasMany(se => se.Schedules)
                 .WithOne(s => s.Semester)
                 .HasForeignKey(s => s.SemesterId);
-
-            modelBuilder.Entity<Student>()
-                .HasOne(s => s.Account)
-                .WithOne(a => a.Student)
-                .HasForeignKey<Account>(a => a.StudentId);
 
             modelBuilder.Entity<Student>()
                 .HasMany(s => s.EnrollmentLists)

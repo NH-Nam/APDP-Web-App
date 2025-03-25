@@ -99,10 +99,6 @@ namespace APDPAssignment.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.HasIndex("StudentId")
-                        .IsUnique()
-                        .HasFilter("[StudentId] IS NOT NULL");
-
                     b.ToTable("Account");
                 });
 
@@ -339,10 +335,7 @@ namespace APDPAssignment.Migrations
             modelBuilder.Entity("APDPAssignment.Models.Student", b =>
                 {
                     b.Property<int>("StudentId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentId"));
 
                     b.Property<DateTime>("StudentDoB")
                         .HasColumnType("datetime2");
@@ -404,13 +397,7 @@ namespace APDPAssignment.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("APDPAssignment.Models.Student", "Student")
-                        .WithOne("Account")
-                        .HasForeignKey("APDPAssignment.Models.Account", "StudentId");
-
                     b.Navigation("Role");
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("APDPAssignment.Models.Admin", b =>
@@ -508,12 +495,26 @@ namespace APDPAssignment.Migrations
                     b.Navigation("Semester");
                 });
 
+            modelBuilder.Entity("APDPAssignment.Models.Student", b =>
+                {
+                    b.HasOne("APDPAssignment.Models.Account", "Account")
+                        .WithOne("Student")
+                        .HasForeignKey("APDPAssignment.Models.Student", "StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
             modelBuilder.Entity("APDPAssignment.Models.Account", b =>
                 {
                     b.Navigation("Admin")
                         .IsRequired();
 
                     b.Navigation("Lecturer")
+                        .IsRequired();
+
+                    b.Navigation("Student")
                         .IsRequired();
                 });
 
@@ -555,9 +556,6 @@ namespace APDPAssignment.Migrations
             modelBuilder.Entity("APDPAssignment.Models.Student", b =>
                 {
                     b.Navigation("AcademicRecords");
-
-                    b.Navigation("Account")
-                        .IsRequired();
 
                     b.Navigation("EnrollmentLists");
                 });

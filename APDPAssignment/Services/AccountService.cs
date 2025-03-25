@@ -13,8 +13,9 @@ namespace APDPAssignment.Services
             _context = context;
         }
 
-        public bool Register(string username, string email, string password, string fullname, string role)
+        public bool Register(string username, string email, string password, string fullname, int role)
         {
+            using var transaction = _context.Database.BeginTransaction();
             try
             {
                 var account = new Account
@@ -22,22 +23,50 @@ namespace APDPAssignment.Services
                     Username = username,
                     Email = email,
                     Password = password,
-                    RoleId = GetRoleId(role)
+                    RoleId = role
                 };
 
-                var student = new Student
-                {
-                    StudentName = fullname,
-                    StudentEmail = email,
-                    Account = account
-                };
-
-                _context.Student.Add(student);
+                _context.Account.Add(account);
                 _context.SaveChanges();
+
+                if (role == 1) // Admin
+                {
+                    var admin = new Admin
+                    {
+                        AdminName = fullname,
+                        AdminEmail = email,
+                        AdminId = account.AccountId
+                    };
+                    _context.Admin.Add(admin);
+                }
+                else if (role == 2) // Lecturer
+                {
+                    var lecturer = new Lecturer
+                    {
+                        LecturerName = fullname,
+                        LecturerEmail = email,
+                        LecturerId = account.AccountId
+                    };
+                    _context.Lecturer.Add(lecturer);
+                }
+                else if (role == 3) // Student
+                {
+                    var student = new Student
+                    {
+                        StudentName = fullname,
+                        StudentEmail = email,
+                        StudentId = account.AccountId
+                    };
+                    _context.Student.Add(student);
+                }
+
+                _context.SaveChanges();
+                transaction.Commit();
                 return true;
             }
             catch
             {
+                transaction.Rollback();
                 return false;
             }
         }
@@ -48,19 +77,15 @@ namespace APDPAssignment.Services
             return account != null;
         }
 
-        private int GetRoleId(string role)
+        public string GetUserRole(string username)
         {
-            switch (role)
+            var account = _context.Account.SingleOrDefault(a => a.Username == username);
+            if (account != null)
             {
-                case "Admin":
-                    return 1;
-                case "Lecturer":
-                    return 2;
-                case "Student":
-                    return 3;
-                default:
-                    throw new ArgumentException("Invalid role");
+                var role = _context.Roles.SingleOrDefault(r => r.RoleId == account.RoleId);
+                return role?.RoleName;
             }
+            return null;
         }
     }
 }
