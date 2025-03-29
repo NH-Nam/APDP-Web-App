@@ -17,7 +17,7 @@ namespace APDPAssignment.Models
         public string LecturerEmail { get; set; }
 
         [StringLength(50)]
-        public string LecturerPhone { get; set; }
+        public string? LecturerPhone { get; set; }
 
 
         // Navigation property

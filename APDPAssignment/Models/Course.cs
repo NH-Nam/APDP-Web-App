@@ -16,11 +16,11 @@ namespace APDPAssignment.Models
         public string CourseDescription { get; set; }
 
         // Foreign key for Semester
-        public int SemesterId { get; set; }
+        public int? SemesterId { get; set; }
         public Semester Semester { get; set; }
 
         // Foreign key for Lecturer
-        public int LecturerId { get; set; }
+        public int? LecturerId { get; set; }
         public Lecturer Lecturer { get; set; }
 
         // Navigation property

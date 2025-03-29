@@ -67,11 +67,11 @@ namespace APDPAssignment.Controllers
                         var role = _accountService.GetUserRole(username);
                         if (role == "Admin")
                         {
-                            return View("CourseManagement", "Course");
+                            return RedirectToAction("CourseManagement", "Course");
                         }
                         else
                         {
-                            return View("Index", "Home");
+                            return RedirectToAction("Index", "Home");
                         }
                     }
                     ModelState.AddModelError("", "Login failed. Please check your username and password.");

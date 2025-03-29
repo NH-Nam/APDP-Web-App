@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APDPAssignment.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250325160553_InitialCreate")]
+    [Migration("20250329055216_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -161,10 +161,10 @@ namespace APDPAssignment.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("LecturerId")
+                    b.Property<int?>("LecturerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SemesterId")
+                    b.Property<int?>("SemesterId")
                         .HasColumnType("int");
 
                     b.HasKey("CourseId");
@@ -219,7 +219,6 @@ namespace APDPAssignment.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("LecturerPhone")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -418,15 +417,12 @@ namespace APDPAssignment.Migrations
                 {
                     b.HasOne("APDPAssignment.Models.Lecturer", "Lecturer")
                         .WithMany("Courses")
-                        .HasForeignKey("LecturerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LecturerId");
 
                     b.HasOne("APDPAssignment.Models.Semester", "Semester")
                         .WithMany("Courses")
                         .HasForeignKey("SemesterId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Lecturer");
 

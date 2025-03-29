@@ -18,6 +18,8 @@
     <div class="form-group mt-2">
         <button type="submit" class="btn btn-primary">Login</button>
     </div>
+    <div class="text-center mt-3">
+        <p>Don't have an account? <a asp-controller="Account" asp-action="Register">Register</a></p>
 </form>
 
 @if (!ViewData.ModelState.IsValid)

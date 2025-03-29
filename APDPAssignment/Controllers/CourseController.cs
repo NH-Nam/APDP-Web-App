@@ -154,5 +154,12 @@ namespace APDPAssignment.Controllers
                 return View();
             }
         }
+
+        [HttpGet]
+        public IActionResult CourseManagement()
+        {
+            var courses = _courseService.GetAllCourses();
+            return View(courses);
+        }
     }
 }

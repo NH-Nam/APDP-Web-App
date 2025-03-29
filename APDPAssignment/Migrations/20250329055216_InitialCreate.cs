@@ -106,7 +106,7 @@ namespace APDPAssignment.Migrations
                     LecturerId = table.Column<int>(type: "int", nullable: false),
                     LecturerName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LecturerEmail = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    LecturerPhone = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    LecturerPhone = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -149,8 +149,8 @@ namespace APDPAssignment.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CourseName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CourseDescription = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    SemesterId = table.Column<int>(type: "int", nullable: false),
-                    LecturerId = table.Column<int>(type: "int", nullable: false)
+                    SemesterId = table.Column<int>(type: "int", nullable: true),
+                    LecturerId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -159,8 +159,7 @@ namespace APDPAssignment.Migrations
                         name: "FK_Course_Lecturer_LecturerId",
                         column: x => x.LecturerId,
                         principalTable: "Lecturer",
-                        principalColumn: "LecturerId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "LecturerId");
                     table.ForeignKey(
                         name: "FK_Course_Semesters_SemesterId",
                         column: x => x.SemesterId,
