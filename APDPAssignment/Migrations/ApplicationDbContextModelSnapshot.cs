@@ -68,10 +68,15 @@ namespace APDPAssignment.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountId"));
 
-                    b.Property<int>("AdminId")
+                    b.Property<int?>("AdminId")
                         .HasColumnType("int");
 
-                    b.Property<int>("LecturerId")
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("LecturerId")
                         .HasColumnType("int");
 
                     b.Property<string>("Password")
@@ -82,7 +87,7 @@ namespace APDPAssignment.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StudentId")
+                    b.Property<int?>("StudentId")
                         .HasColumnType("int");
 
                     b.Property<string>("Username")
@@ -101,6 +106,11 @@ namespace APDPAssignment.Migrations
                 {
                     b.Property<int>("AdminId")
                         .HasColumnType("int");
+
+                    b.Property<string>("AdminEmail")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("AdminName")
                         .IsRequired()
@@ -336,7 +346,6 @@ namespace APDPAssignment.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("StudentGender")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StudentName")
@@ -345,7 +354,6 @@ namespace APDPAssignment.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("StudentPhone")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 

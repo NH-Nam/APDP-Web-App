@@ -63,9 +63,10 @@ namespace APDPAssignment.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    StudentId = table.Column<int>(type: "int", nullable: false),
-                    AdminId = table.Column<int>(type: "int", nullable: false),
-                    LecturerId = table.Column<int>(type: "int", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    StudentId = table.Column<int>(type: "int", nullable: true),
+                    AdminId = table.Column<int>(type: "int", nullable: true),
+                    LecturerId = table.Column<int>(type: "int", nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -84,7 +85,8 @@ namespace APDPAssignment.Migrations
                 columns: table => new
                 {
                     AdminId = table.Column<int>(type: "int", nullable: false),
-                    AdminName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    AdminName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    AdminEmail = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -124,9 +126,9 @@ namespace APDPAssignment.Migrations
                     StudentId = table.Column<int>(type: "int", nullable: false),
                     StudentName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     StudentEmail = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    StudentPhone = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    StudentPhone = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     StudentDoB = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StudentGender = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    StudentGender = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
