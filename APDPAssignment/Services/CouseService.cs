@@ -7,14 +7,10 @@ namespace APDPAssignment.Services
     public class CourseService : ICourseService
     {
         private readonly ICourseRepository _courseRepository;
-        private readonly IStudentRepository _studentRepository;
-        private readonly IEnrollmentListRepository _enrollmentListRepository;
 
-        public CourseService(ICourseRepository courseRepository, IStudentRepository studentRepository, IEnrollmentListRepository enrollmentListRepository)
+        public CourseService(ICourseRepository courseRepository)
         {
             _courseRepository = courseRepository;
-            _studentRepository = studentRepository;
-            _enrollmentListRepository = enrollmentListRepository;
         }
 
         public IEnumerable<Course> GetAllCourses()
@@ -53,11 +49,23 @@ namespace APDPAssignment.Services
             }
         }
 
+        public Course GetCourseByNameAndDescription(string courseName, string courseDescription)
+        {
+            try
+            {
+                return _courseRepository.GetCourseByNameAndDescription(courseName, courseDescription);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public bool EditCourse(Course course)
         {
             try
             {
-                return _courseRepository.UpdateCourse(course);
+                return _courseRepository.EditCourse(course);
             }
             catch (Exception)
             {

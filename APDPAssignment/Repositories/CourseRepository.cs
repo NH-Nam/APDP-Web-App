@@ -50,7 +50,18 @@ namespace APDPAssignment.Repositories
             }
         }
 
-        public bool UpdateCourse(Course course)
+        public Course GetCourseByNameAndDescription(string courseName, string courseDescription)
+        {
+            try
+            {
+                return _context.Course.FirstOrDefault(c => c.CourseName == courseName && c.CourseDescription == courseDescription);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        public bool EditCourse(Course course)
         {
             try
             {
