@@ -15,18 +15,5 @@ namespace APDPAssignment.Models
         [StringLength(200)]
         public string CourseDescription { get; set; }
 
-        // Foreign key for Semester
-        public int? SemesterId { get; set; }
-        public Semester Semester { get; set; }
-
-        // Foreign key for Lecturer
-        public int? LecturerId { get; set; }
-        public Lecturer Lecturer { get; set; }
-
-        // Navigation property
-        public virtual ICollection<EnrollmentList> EnrollmentLists { get; set; }
-        public virtual ICollection<AcademicRecords> AcademicRecords { get; set; }
-        public virtual ICollection<Schedule> Schedules { get; set; }
-
     }
 }

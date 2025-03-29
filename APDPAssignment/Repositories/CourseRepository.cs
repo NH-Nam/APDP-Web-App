@@ -20,7 +20,7 @@ namespace APDPAssignment.Repositories
             }
             catch
             {
-                return null;
+                return Enumerable.Empty<Course>();
             }
         }
 
@@ -68,10 +68,14 @@ namespace APDPAssignment.Repositories
         {
             try
             {
-                var course = _context.Course.Find(courseId);
-                _context.Course.Remove(course);
-                _context.SaveChanges();
-                return true;
+                var course = _context.Course.Find(courseId); 
+                if (course != null)
+                {
+                    _context.Course.Remove(course);
+                    _context.SaveChanges();
+                    return true;
+                }
+                return false;
             }
             catch
             {

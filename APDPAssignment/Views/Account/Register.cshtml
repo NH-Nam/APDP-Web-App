@@ -39,6 +39,9 @@
                 <div class="form-group mt-4">
                     <button type="submit" class="btn btn-primary w-100">Register</button>
                 </div>
+                <div class="text-center mt-3">
+                    <p>Already have an account? <a asp-controller="Account" asp-action="Login">Login</a></p>
+                </div>
             </form>
 
             @if (!ViewData.ModelState.IsValid)
@@ -49,10 +52,6 @@
                     </p>
                 </div>
             }
-
-            <div class="text-center mt-3">
-                <p>Already have an account? <a asp-controller="Account" asp-action="Login">Login</a></p>
-            </div>
         </div>
     </div>
 </div>

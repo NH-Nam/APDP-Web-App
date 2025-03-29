@@ -9,6 +9,5 @@ namespace APDPAssignment.Services
         bool EditCourse(Course course);
         bool DeleteCourse(int courseId);
         Course GetCourseById(int courseId);
-        bool AssignCourseToStudent(int courseId, int studentId);
     }
 }

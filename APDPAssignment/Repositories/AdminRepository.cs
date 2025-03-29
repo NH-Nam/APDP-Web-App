@@ -88,43 +88,5 @@ namespace APDPAssignment.Repositories
                 return false;
             }
         }
-
-        public bool AssignCourseToStudent(int studentId, int courseId)
-        {
-            try
-            {
-                var enrollment = new EnrollmentList
-                {
-                    StudentId = studentId,
-                    CourseId = courseId,
-                    EnrollmentDate = DateTime.Now.ToString("yyyy-MM-dd")
-                };
-                _context.EnrollmentList.Add(enrollment);
-                _context.SaveChanges();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
-        }
-
-        public IEnumerable<Course> GetCoursesByStudent(int studentId)
-        {
-            try
-            {
-                return _context.EnrollmentList
-                    .Where(e => e.StudentId == studentId)
-                    .Include(e => e.Course)
-                    .Select(e => e.Course)
-                    .ToList();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return Enumerable.Empty<Course>();
-            }
-        }
     }
 }

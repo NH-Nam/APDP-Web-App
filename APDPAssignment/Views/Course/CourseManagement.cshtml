@@ -7,7 +7,7 @@
 <h2>Course Management</h2>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Add New Course</a>
+    <a asp-action="CreateCourse" class="btn btn-primary">Add New Course</a>
 </p>
 
 <table class="table">
@@ -19,17 +19,22 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var course in Model)
+        @if (Model != null)
         {
-            <tr>
-                <td>@course.CourseName</td>
-                <td>@course.CourseDescription</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@course.CourseId" class="btn btn-warning">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@course.CourseId" class="btn btn-danger">Delete</a>
-                    <a asp-action="Assign" asp-route-courseId="@course.CourseId" class="btn btn-info">Assign</a>
-                </td>
-            </tr>
+            foreach (var course in Model)
+            {
+                <tr>
+                    <td>@course?.CourseName</td>
+                    <td>@course?.CourseDescription</td>
+                    <td>
+                        <a asp-action="EditCourse" asp-route-id="@course?.CourseId" class="btn btn-warning">Edit</a>
+                        <a asp-action="Assign" asp-route-courseId="@course?.CourseId" class="btn btn-info">Assign</a>
+                        <form asp-action="Delete" asp-route-id="@course?.CourseId" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this course?');">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>

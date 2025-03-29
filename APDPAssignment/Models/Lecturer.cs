@@ -23,6 +23,5 @@ namespace APDPAssignment.Models
         // Navigation property
         public virtual Account Account { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }
-        public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
     }
 }

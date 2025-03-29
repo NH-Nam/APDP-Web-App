@@ -68,40 +68,5 @@ namespace APDPAssignment.Repositories
                 return false;
             }
         }
-
-        // New method to get EnrollmentLists by CourseId
-        public IEnumerable<EnrollmentList> GetEnrollmentListsByCourseId(int courseId)
-        {
-            try
-            {
-                return _context.EnrollmentList.Where(e => e.CourseId == courseId).ToList();
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
-        // New method to add EnrollmentList to a Course
-        public bool AddEnrollmentListToCourse(int courseId, EnrollmentList enrollmentList)
-        {
-            try
-            {
-                var course = _context.Course.Find(courseId);
-                if (course == null)
-                {
-                    return false;
-                }
-
-                enrollmentList.CourseId = courseId;
-                _context.EnrollmentList.Add(enrollmentList);
-                _context.SaveChanges();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
     }
 }

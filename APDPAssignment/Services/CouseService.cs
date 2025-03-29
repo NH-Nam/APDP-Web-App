@@ -25,7 +25,7 @@ namespace APDPAssignment.Services
             }
             catch (Exception)
             {
-                return null;
+                return new List<Course>();
             }
         }
 
@@ -45,8 +45,7 @@ namespace APDPAssignment.Services
         {
             try
             {
-                _courseRepository.AddCourse(course);
-                return true;
+                return _courseRepository.AddCourse(course);
             }
             catch (Exception)
             {
@@ -58,8 +57,7 @@ namespace APDPAssignment.Services
         {
             try
             {
-                _courseRepository.UpdateCourse(course);
-                return true;
+                return _courseRepository.UpdateCourse(course);
             }
             catch (Exception)
             {
@@ -71,33 +69,7 @@ namespace APDPAssignment.Services
         {
             try
             {
-                _courseRepository.DeleteCourse(courseId);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        public bool AssignCourseToStudent(int courseId, int studentId)
-        {
-            try
-            {
-                var course = _courseRepository.GetCourseById(courseId);
-                var student = _studentRepository.GetStudentById(studentId);
-
-                if (course != null && student != null)
-                {
-                    var enrollment = new EnrollmentList
-                    {
-                        CourseId = courseId,
-                        StudentId = studentId,
-                        EnrollmentDate = DateTime.Now.ToString("yyyy-MM-dd")
-                    };
-                    return _enrollmentListRepository.AddEnrollmentList(enrollment);
-                }
-                return false;
+                return _courseRepository.DeleteCourse(courseId);
             }
             catch (Exception)
             {

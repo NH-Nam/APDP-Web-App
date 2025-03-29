@@ -39,13 +39,14 @@ namespace APDPAssignment.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult CreateCourse()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(Course course)
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateCourse(Course course)
         {
             try
             {
@@ -54,20 +55,29 @@ namespace APDPAssignment.Controllers
                     var success = _courseService.AddCourse(course);
                     if (success)
                     {
-                        return RedirectToAction("Index");
+                        return RedirectToAction("CourseManagement");
                     }
                     ModelState.AddModelError(string.Empty, "Failed to create course.");
                 }
+
+                foreach (var modelState in ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        Console.WriteLine(error.ErrorMessage);
+                    }
+                }
+
                 return View(course);
             }
             catch
             {
-                return View();
+                return View(course);
             }
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public IActionResult EditCourse(int id)
         {
             var course = _courseService.GetCourseById(id);
             if (course == null)
@@ -78,7 +88,8 @@ namespace APDPAssignment.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Course course)
+        [ValidateAntiForgeryToken]
+        public IActionResult EditCourse(Course course)
         {
             try
             {
@@ -87,7 +98,7 @@ namespace APDPAssignment.Controllers
                     var success = _courseService.EditCourse(course);
                     if (success)
                     {
-                        return RedirectToAction("Index");
+                        return RedirectToAction("CourseManagement");
                     }
                     ModelState.AddModelError(string.Empty, "Failed to update course.");
                 }
@@ -95,63 +106,27 @@ namespace APDPAssignment.Controllers
             }
             catch
             {
-                return View();
+                return View(course);
             }
         }
 
-        [HttpGet]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
-        {
-            var course = _courseService.GetCourseById(id);
-            if (course == null)
-            {
-                return NotFound();
-            }
-            return View(course);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeleteConfirmed(int id)
         {
             try
             {
                 var success = _courseService.DeleteCourse(id);
                 if (success)
                 {
-                    return RedirectToAction("Index");
+                    return RedirectToAction("CourseManagement");
                 }
                 ModelState.AddModelError(string.Empty, "Failed to delete course.");
-                return View();
+                return RedirectToAction("CourseManagement");
             }
             catch
             {
-                return View();
-            }
-        }
-
-        [HttpGet]
-        public IActionResult Assign(int courseId)
-        {
-            ViewBag.CourseId = courseId;
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Assign(int courseId, int studentId)
-        {
-            try
-            {
-                var success = _courseService.AssignCourseToStudent(courseId, studentId);
-                if (success)
-                {
-                    return RedirectToAction("Details", new { id = courseId });
-                }
-                ModelState.AddModelError(string.Empty, "Failed to assign course to student.");
-                return View();
-            }
-            catch
-            {
-                return View();
+                return RedirectToAction("CourseManagement");
             }
         }
 
