@@ -15,5 +15,6 @@ namespace APDPAssignment.Models
         [StringLength(200)]
         public string CourseDescription { get; set; }
 
+        public virtual ICollection<StudentCourse> StudentCourses { get; set; } = new List<StudentCourse>();
     }
 }

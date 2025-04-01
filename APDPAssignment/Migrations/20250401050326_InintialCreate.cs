@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace APDPAssignment.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InintialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -236,7 +236,31 @@ namespace APDPAssignment.Migrations
                         column: x => x.StudentId,
                         principalTable: "Student",
                         principalColumn: "StudentId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StudentCourses",
+                columns: table => new
+                {
+                    StudentId = table.Column<int>(type: "int", nullable: false),
+                    CourseId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StudentCourses", x => new { x.StudentId, x.CourseId });
+                    table.ForeignKey(
+                        name: "FK_StudentCourses_Course_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Course",
+                        principalColumn: "CourseId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StudentCourses_Student_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Student",
+                        principalColumn: "StudentId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -293,6 +317,11 @@ namespace APDPAssignment.Migrations
                 name: "IX_Schedules_SemesterId",
                 table: "Schedules",
                 column: "SemesterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StudentCourses_CourseId",
+                table: "StudentCourses",
+                column: "CourseId");
         }
 
         /// <inheritdoc />
@@ -305,16 +334,13 @@ namespace APDPAssignment.Migrations
                 name: "Admin");
 
             migrationBuilder.DropTable(
-                name: "Course");
-
-            migrationBuilder.DropTable(
                 name: "EnrollmentList");
 
             migrationBuilder.DropTable(
                 name: "Schedules");
 
             migrationBuilder.DropTable(
-                name: "Student");
+                name: "StudentCourses");
 
             migrationBuilder.DropTable(
                 name: "Classroom");
@@ -324,6 +350,12 @@ namespace APDPAssignment.Migrations
 
             migrationBuilder.DropTable(
                 name: "Semesters");
+
+            migrationBuilder.DropTable(
+                name: "Course");
+
+            migrationBuilder.DropTable(
+                name: "Student");
 
             migrationBuilder.DropTable(
                 name: "Account");

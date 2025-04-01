@@ -13,7 +13,17 @@ namespace APDPAssignment.Repositories
             _context = context;
         }
 
-        public IEnumerable<Student> Students => _context.Student.ToList();
+        public IEnumerable<Student> GetAllStudents()
+        {
+            try
+            {
+                return _context.Student.ToList();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
 
         public Student GetStudentById(int studentId)
         {
@@ -82,6 +92,26 @@ namespace APDPAssignment.Repositories
             catch (Exception)
             {
                 return null;
+            }
+        }
+
+        public bool AssignCourseToStudent(int studentId, int courseId)
+        {
+            try
+            {
+                var studentCourse = new StudentCourse
+                {
+                    StudentId = studentId,
+                    CourseId = courseId
+                };
+
+                _context.StudentCourses.Add(studentCourse);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
     }

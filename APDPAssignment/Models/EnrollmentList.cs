@@ -10,9 +10,7 @@ namespace APDPAssignment.Models
         [Required]
         [DataType(DataType.Date)]
         public string EnrollmentDate { get; set; } 
-           
-        public int StudentId { get; set; }
-        public Student Student { get; set; }
+          
 
     }
 }

@@ -20,6 +20,7 @@ namespace APDPAssignment.Data
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<Semester> Semesters { get; set; }
         public DbSet<Student> Student { get; set; }
+        public DbSet<StudentCourse> StudentCourses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -60,12 +61,6 @@ namespace APDPAssignment.Data
                 .WithOne(s => s.Classroom)
                 .HasForeignKey(s => s.ClassroomId);
 
-            modelBuilder.Entity<EnrollmentList>()
-                .HasOne(e => e.Student)
-                .WithMany(s => s.EnrollmentLists)
-                .HasForeignKey(e => e.StudentId)
-                .OnDelete(DeleteBehavior.Restrict);
-
             modelBuilder.Entity<Lecturer>()
                 .HasMany(l => l.Schedules)
                 .WithOne(s => s.Lecturer)
@@ -104,14 +99,22 @@ namespace APDPAssignment.Data
                 .HasForeignKey(s => s.SemesterId);
 
             modelBuilder.Entity<Student>()
-                .HasMany(s => s.EnrollmentLists)
-                .WithOne(e => e.Student)
-                .HasForeignKey(e => e.StudentId);
-
-            modelBuilder.Entity<Student>()
                 .HasMany(s => s.AcademicRecords)
                 .WithOne(ar => ar.Student)
                 .HasForeignKey(ar => ar.StudentId);
+
+            modelBuilder.Entity<StudentCourse>()
+            .HasKey(sc => new { sc.StudentId, sc.CourseId });
+
+            modelBuilder.Entity<StudentCourse>()
+                .HasOne(sc => sc.Student)
+                .WithMany(s => s.StudentCourses)
+                .HasForeignKey(sc => sc.StudentId);
+
+            modelBuilder.Entity<StudentCourse>()
+                .HasOne(sc => sc.Course)
+                .WithMany(c => c.StudentCourses)
+                .HasForeignKey(sc => sc.CourseId);
 
             // Roles Id and Names
             modelBuilder.Entity<Roles>().HasData(

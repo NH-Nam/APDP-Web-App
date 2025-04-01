@@ -350,6 +350,21 @@ namespace APDPAssignment.Migrations
                     b.ToTable("Student");
                 });
 
+            modelBuilder.Entity("APDPAssignment.Models.StudentCourse", b =>
+                {
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StudentId", "CourseId");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("StudentCourses");
+                });
+
             modelBuilder.Entity("APDPAssignment.Models.AcademicRecords", b =>
                 {
                     b.HasOne("APDPAssignment.Models.Semester", "Semester")
@@ -394,9 +409,9 @@ namespace APDPAssignment.Migrations
             modelBuilder.Entity("APDPAssignment.Models.EnrollmentList", b =>
                 {
                     b.HasOne("APDPAssignment.Models.Student", "Student")
-                        .WithMany("EnrollmentLists")
+                        .WithMany()
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Student");
@@ -451,6 +466,25 @@ namespace APDPAssignment.Migrations
                     b.Navigation("Account");
                 });
 
+            modelBuilder.Entity("APDPAssignment.Models.StudentCourse", b =>
+                {
+                    b.HasOne("APDPAssignment.Models.Course", "Course")
+                        .WithMany("StudentCourses")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("APDPAssignment.Models.Student", "Student")
+                        .WithMany("StudentCourses")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("APDPAssignment.Models.Account", b =>
                 {
                     b.Navigation("Admin")
@@ -466,6 +500,11 @@ namespace APDPAssignment.Migrations
             modelBuilder.Entity("APDPAssignment.Models.Classroom", b =>
                 {
                     b.Navigation("Schedules");
+                });
+
+            modelBuilder.Entity("APDPAssignment.Models.Course", b =>
+                {
+                    b.Navigation("StudentCourses");
                 });
 
             modelBuilder.Entity("APDPAssignment.Models.Lecturer", b =>
@@ -489,7 +528,7 @@ namespace APDPAssignment.Migrations
                 {
                     b.Navigation("AcademicRecords");
 
-                    b.Navigation("EnrollmentLists");
+                    b.Navigation("StudentCourses");
                 });
 #pragma warning restore 612, 618
         }
