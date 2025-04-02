@@ -13,6 +13,10 @@ namespace APDPAssignment.Controllers
             _accountService = accountService;
         }
 
+        public AccountController()
+        {
+        }
+
         [HttpGet]
         public IActionResult Register()
         {
