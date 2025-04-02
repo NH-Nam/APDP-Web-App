@@ -170,12 +170,7 @@ namespace APDPAssignment.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
                     b.HasKey("EnrollmentId");
-
-                    b.HasIndex("StudentId");
 
                     b.ToTable("EnrollmentList");
                 });
@@ -404,17 +399,6 @@ namespace APDPAssignment.Migrations
                         .IsRequired();
 
                     b.Navigation("Account");
-                });
-
-            modelBuilder.Entity("APDPAssignment.Models.EnrollmentList", b =>
-                {
-                    b.HasOne("APDPAssignment.Models.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("APDPAssignment.Models.Lecturer", b =>
