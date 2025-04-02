@@ -11,21 +11,21 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<IStudentRepository, StudentRepository>();
-builder.Services.AddScoped<ICourseRepository, CourseRepository>();
-builder.Services.AddScoped<IClassroomRepository, ClassroomRepository>();
-builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
-builder.Services.AddScoped<IEnrollmentListRepository, EnrollmentListRepository>();
-builder.Services.AddScoped<ILecturerRepository, LecturerRepository>();
-builder.Services.AddScoped<IAdminRepository, AdminRepository>();
-builder.Services.AddScoped<IRolesRepository, RolesRepository>();
-builder.Services.AddScoped<IAcademicRecordsRepository, AcademicRecordsRepository>();
-builder.Services.AddScoped<ISemesterRepository, SemesterRepository>();
-builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddSingleton<IStudentRepository, StudentRepository>();
+builder.Services.AddSingleton<ICourseRepository, CourseRepository>();
+builder.Services.AddSingleton<IClassroomRepository, ClassroomRepository>();
+builder.Services.AddSingleton<IScheduleRepository, ScheduleRepository>();
+builder.Services.AddSingleton<IEnrollmentListRepository, EnrollmentListRepository>();
+builder.Services.AddSingleton<ILecturerRepository, LecturerRepository>();
+builder.Services.AddSingleton<IAdminRepository, AdminRepository>();
+builder.Services.AddSingleton<IRolesRepository, RolesRepository>();
+builder.Services.AddSingleton<IAcademicRecordsRepository, AcademicRecordsRepository>();
+builder.Services.AddSingleton<ISemesterRepository, SemesterRepository>();
+builder.Services.AddSingleton<IAccountRepository, AccountRepository>();
 
-builder.Services.AddScoped<ICourseService, CourseService>();
-builder.Services.AddScoped<IAccountService, AccountService>();
-builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddSingleton<ICourseService, CourseService>();
+builder.Services.AddSingleton<IAccountService, AccountService>();
+builder.Services.AddSingleton<IStudentService, StudentService>();
 
 var app = builder.Build();
 
