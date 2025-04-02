@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace APDPAssignment.Migrations
 {
     /// <inheritdoc />
-    public partial class InintialCreate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -38,6 +38,19 @@ namespace APDPAssignment.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Course", x => x.CourseId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EnrollmentList",
+                columns: table => new
+                {
+                    EnrollmentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EnrollmentDate = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EnrollmentList", x => x.EnrollmentId);
                 });
 
             migrationBuilder.CreateTable(
@@ -220,26 +233,6 @@ namespace APDPAssignment.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EnrollmentList",
-                columns: table => new
-                {
-                    EnrollmentId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    EnrollmentDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StudentId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EnrollmentList", x => x.EnrollmentId);
-                    table.ForeignKey(
-                        name: "FK_EnrollmentList_Student_StudentId",
-                        column: x => x.StudentId,
-                        principalTable: "Student",
-                        principalColumn: "StudentId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "StudentCourses",
                 columns: table => new
                 {
@@ -297,11 +290,6 @@ namespace APDPAssignment.Migrations
                 name: "IX_Account_RoleId",
                 table: "Account",
                 column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EnrollmentList_StudentId",
-                table: "EnrollmentList",
-                column: "StudentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Schedules_ClassroomId",

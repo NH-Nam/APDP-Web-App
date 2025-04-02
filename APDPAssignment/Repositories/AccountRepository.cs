@@ -12,66 +12,79 @@ namespace APDPAssignment.Repositories
             _context = context;
         }
 
-        public bool Register(string username, string email, string password, string role,
-            string firstName, string lastName, string phoneNumber, DateTime dob, string gender)
+        public bool Register(string username, string email, string password, string fullname, int role)
         {
-            var account = new Account
+            using var transaction = _context.Database.BeginTransaction();
+            try
             {
-                Username = username,
-                Email = email,
-                Password = password,
-                RoleId = GetRoleId(role)
-            };
-
-            if (role == "Student")
-            {
-                var student = new Student
+                var account = new Account
                 {
-                    StudentName = $"{firstName} {lastName}",
-                    StudentEmail = email,
-                    StudentPhone = phoneNumber,
-                    StudentDoB = dob,
-                    StudentGender = gender
+                    Username = username,
+                    Email = email,
+                    Password = password,
+                    RoleId = role
                 };
-                _context.Student.Add(student);
+
+                _context.Account.Add(account);
                 _context.SaveChanges();
 
-                account.StudentId = student.StudentId;
-            }
-            else if (role == "Admin")
-            {
-                var admin = new Admin
+                if (role == 1) // Admin
                 {
-                    AdminName = $"{firstName} {lastName}"
-                };
-                _context.Admin.Add(admin);
-                _context.SaveChanges();
-
-                account.AdminId = admin.AdminId;
-            }
-            else if (role == "Lecturer")
-            {
-                var lecturer = new Lecturer
+                    var admin = new Admin
+                    {
+                        AdminName = fullname,
+                        AdminEmail = email,
+                        AdminId = account.AccountId
+                    };
+                    _context.Admin.Add(admin);
+                }
+                else if (role == 2) // Lecturer
                 {
-                    LecturerName = $"{firstName} {lastName}",
-                    LecturerEmail = email,
-                    LecturerPhone = phoneNumber
-                };
-                _context.Lecturer.Add(lecturer);
+                    var lecturer = new Lecturer
+                    {
+                        LecturerName = fullname,
+                        LecturerEmail = email,
+                        LecturerId = account.AccountId
+                    };
+                    _context.Lecturer.Add(lecturer);
+                }
+                else if (role == 3) // Student
+                {
+                    var student = new Student
+                    {
+                        StudentName = fullname,
+                        StudentEmail = email,
+                        StudentId = account.AccountId
+                    };
+                    _context.Student.Add(student);
+                }
+
                 _context.SaveChanges();
-
-                account.LecturerId = lecturer.LecturerId;
+                transaction.Commit();
+                return true;
             }
-
-            _context.Account.Add(account);
-            return _context.SaveChanges() > 0;
+            catch
+            {
+                transaction.Rollback();
+                return false;
+            }
         }
 
-        private int GetRoleId(string role)
+        public bool Login(string username, string password)
         {
-            // Implement logic to get the role ID based on the role name
-            var roleEntity = _context.Roles.FirstOrDefault(r => r.RoleName == role);
-            return roleEntity?.RoleId ?? 0;
+            var account = _context.Account.SingleOrDefault(a => a.Username == username && a.Password == password);
+            return account != null;
+        }
+
+        public string GetUserRole(string username)
+        {
+            var account = _context.Account.SingleOrDefault(a => a.Username == username);
+            if (account != null)
+            {
+                var role = _context.Roles.SingleOrDefault(r => r.RoleId == account.RoleId);
+                return role?.RoleName;
+            }
+            return null;
         }
     }
 }

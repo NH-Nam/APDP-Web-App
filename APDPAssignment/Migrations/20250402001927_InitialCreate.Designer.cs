@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APDPAssignment.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250401050326_InintialCreate")]
-    partial class InintialCreate
+    [Migration("20250402001927_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -173,12 +173,7 @@ namespace APDPAssignment.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
                     b.HasKey("EnrollmentId");
-
-                    b.HasIndex("StudentId");
 
                     b.ToTable("EnrollmentList");
                 });
@@ -407,17 +402,6 @@ namespace APDPAssignment.Migrations
                         .IsRequired();
 
                     b.Navigation("Account");
-                });
-
-            modelBuilder.Entity("APDPAssignment.Models.EnrollmentList", b =>
-                {
-                    b.HasOne("APDPAssignment.Models.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("APDPAssignment.Models.Lecturer", b =>
