@@ -27,5 +27,10 @@ namespace APDPAssignment.Services
         {
             return _accountRepository.GetUserRole(username);
         }
+
+        public Account GetAccountByUsername(string username)
+        {
+            return _accountRepository.GetAccountByUsername(username);
+        }
     }
 }

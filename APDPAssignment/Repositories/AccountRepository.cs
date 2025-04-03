@@ -86,5 +86,10 @@ namespace APDPAssignment.Repositories
             }
             return null;
         }
+
+        public Account GetAccountByUsername(string username)
+        {
+            return _context.Account.SingleOrDefault(a => a.Username == username);
+        }
     }
 }

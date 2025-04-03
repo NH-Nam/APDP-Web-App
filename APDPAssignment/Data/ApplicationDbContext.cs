@@ -14,11 +14,9 @@ namespace APDPAssignment.Data
         public DbSet<Admin> Admin { get; set; }
         public DbSet<Classroom> Classroom { get; set; }
         public DbSet<Course> Course { get; set; }
-        public DbSet<EnrollmentList> EnrollmentList { get; set; }
         public DbSet<Lecturer> Lecturer { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
-        public DbSet<Semester> Semesters { get; set; }
         public DbSet<Student> Student { get; set; }
         public DbSet<StudentCourse> StudentCourses { get; set; }
 
@@ -50,12 +48,6 @@ namespace APDPAssignment.Data
                 .HasForeignKey(ar => ar.StudentId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<AcademicRecords>()
-                .HasOne(ar => ar.Semester)
-                .WithMany(s => s.AcademicRecords)
-                .HasForeignKey(ar => ar.SemesterId)
-                .OnDelete(DeleteBehavior.Restrict);
-
             modelBuilder.Entity<Classroom>()
                 .HasMany(c => c.Schedules)
                 .WithOne(s => s.Classroom)
@@ -77,26 +69,10 @@ namespace APDPAssignment.Data
                 .HasForeignKey(s => s.ClassroomId);
 
             modelBuilder.Entity<Schedule>()
-                .HasOne(s => s.Semester)
-                .WithMany(se => se.Schedules)
-                .HasForeignKey(s => s.SemesterId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Schedule>()
                 .HasOne(s => s.Lecturer)
                 .WithMany(l => l.Schedules)
                 .HasForeignKey(s => s.LecturerId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Semester>()
-                .HasMany(se => se.AcademicRecords)
-                .WithOne(ar => ar.Semester)
-                .HasForeignKey(ar => ar.SemesterId);
-
-            modelBuilder.Entity<Semester>()
-                .HasMany(se => se.Schedules)
-                .WithOne(s => s.Semester)
-                .HasForeignKey(s => s.SemesterId);
 
             modelBuilder.Entity<Student>()
                 .HasMany(s => s.AcademicRecords)
@@ -121,12 +97,6 @@ namespace APDPAssignment.Data
                 new Roles { RoleId = 1, RoleName = "Admin" },
                 new Roles { RoleId = 2, RoleName = "Lecturer" },
                 new Roles { RoleId = 3, RoleName = "Student" }
-            );
-
-            modelBuilder.Entity<Semester>().HasData(
-                new Semester { SemesterId = 1, SemesterName = "Fall2024" },
-                new Semester { SemesterId = 2, SemesterName = "Spring2025" },
-                new Semester { SemesterId = 3, SemesterName = "Summer2025" }
             );
         }
     }
