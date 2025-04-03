@@ -8,20 +8,17 @@ namespace APDPAssignment.Controllers
 {
     public class CourseController : Controller
     {
-        private readonly ICourseService _courseService;
-        private readonly IStudentService _studentService;
+        private readonly CourseFacade _courseFacade;
 
-
-        public CourseController(ICourseService courseService, IStudentService studentService)
+        public CourseController(CourseFacade courseFacade)
         {
-            _courseService = courseService;
-            _studentService = studentService;
+            _courseFacade = courseFacade;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            var courses = _courseService.GetAllCourses();
+            var courses = _courseFacade.GetAllCourses();
             return View(courses);
         }
 
@@ -30,7 +27,7 @@ namespace APDPAssignment.Controllers
         {
             try
             {
-                var course = _courseService.GetCourseById(id);
+                var course = _courseFacade.GetCourseById(id);
                 if (course == null)
                 {
                     return NotFound();
@@ -57,22 +54,13 @@ namespace APDPAssignment.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var success = _courseService.AddCourse(course);
+                    var success = _courseFacade.AddCourse(course);
                     if (success)
                     {
                         return RedirectToAction("CourseManagement");
                     }
                     ModelState.AddModelError(string.Empty, "Failed to create course.");
                 }
-
-                foreach (var modelState in ModelState.Values)
-                {
-                    foreach (var error in modelState.Errors)
-                    {
-                        Console.WriteLine(error.ErrorMessage);
-                    }
-                }
-
                 return View(course);
             }
             catch
@@ -84,7 +72,7 @@ namespace APDPAssignment.Controllers
         [HttpGet]
         public IActionResult EditCourse(int id)
         {
-            var course = _courseService.GetCourseById(id);
+            var course = _courseFacade.GetCourseById(id);
             if (course == null)
             {
                 return NotFound();
@@ -100,7 +88,7 @@ namespace APDPAssignment.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var success = _courseService.EditCourse(course);
+                    var success = _courseFacade.EditCourse(course);
                     if (success)
                     {
                         return RedirectToAction("CourseManagement");
@@ -121,7 +109,7 @@ namespace APDPAssignment.Controllers
         {
             try
             {
-                var success = _courseService.DeleteCourse(id);
+                var success = _courseFacade.DeleteCourse(id);
                 if (success)
                 {
                     return RedirectToAction("CourseManagement");
@@ -138,31 +126,26 @@ namespace APDPAssignment.Controllers
         [HttpGet]
         public IActionResult CourseManagement()
         {
-            var courses = _courseService.GetAllCourses();
+            var courses = _courseFacade.GetAllCourses();
             return View(courses);
-        }
-
-        private AssignCourseViewModel CreateAssignCourseViewModel()
-        {
-            return new AssignCourseViewModel
-            {
-                Students = _studentService.GetAllStudents().Select(s => new SelectListItem
-                {
-                    Value = s.StudentId.ToString(),
-                    Text = s.StudentName
-                }),
-                Courses = _courseService.GetAllCourses().Select(c => new SelectListItem
-                {
-                    Value = c.CourseId.ToString(),
-                    Text = c.CourseName
-                })
-            };
         }
 
         [HttpGet]
         public IActionResult AssignCourse()
         {
-            var model = CreateAssignCourseViewModel();
+            var model = new AssignCourseViewModel
+            {
+                Students = _courseFacade.GetAllStudents().Select(s => new SelectListItem
+                {
+                    Value = s.StudentId.ToString(),
+                    Text = s.StudentName
+                }),
+                Courses = _courseFacade.GetAllCourses().Select(c => new SelectListItem
+                {
+                    Value = c.CourseId.ToString(),
+                    Text = c.CourseName
+                })
+            };
             return View(model);
         }
 
@@ -172,7 +155,7 @@ namespace APDPAssignment.Controllers
         {
             if (model.StudentId.HasValue && model.CourseId.HasValue)
             {
-                var success = _studentService.AssignCourseToStudent(model.StudentId.Value, model.CourseId.Value);
+                var success = _courseFacade.AssignCourseToStudent(model.StudentId.Value, model.CourseId.Value);
                 if (success)
                 {
                     return RedirectToAction("CourseManagement");
@@ -184,7 +167,19 @@ namespace APDPAssignment.Controllers
                 ModelState.AddModelError(string.Empty, "Student and Course are required.");
             }
 
-            model = CreateAssignCourseViewModel();
+            model = new AssignCourseViewModel
+            {
+                Students = _courseFacade.GetAllStudents().Select(s => new SelectListItem
+                {
+                    Value = s.StudentId.ToString(),
+                    Text = s.StudentName
+                }),
+                Courses = _courseFacade.GetAllCourses().Select(c => new SelectListItem
+                {
+                    Value = c.CourseId.ToString(),
+                    Text = c.CourseName
+                })
+            };
             return View(model);
         }
     }

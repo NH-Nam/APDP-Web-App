@@ -21,7 +21,7 @@ namespace APDPAssignment.Repositories
             }
             catch (Exception)
             {
-                return null;
+                return Enumerable.Empty<Student>();
             }
         }
 
