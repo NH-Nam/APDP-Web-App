@@ -30,12 +30,6 @@ namespace APDPAssignment.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AcademicRecordId"));
 
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SemesterId")
-                        .HasColumnType("int");
-
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
 
@@ -50,10 +44,6 @@ namespace APDPAssignment.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("AcademicRecordId");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("SemesterId");
 
                     b.HasIndex("StudentId");
 
@@ -158,46 +148,9 @@ namespace APDPAssignment.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("LecturerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SemesterId")
-                        .HasColumnType("int");
-
                     b.HasKey("CourseId");
 
-                    b.HasIndex("LecturerId");
-
-                    b.HasIndex("SemesterId");
-
                     b.ToTable("Course");
-                });
-
-            modelBuilder.Entity("APDPAssignment.Models.EnrollmentList", b =>
-                {
-                    b.Property<int>("EnrollmentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EnrollmentId"));
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("EnrollmentDate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EnrollmentId");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("EnrollmentList");
                 });
 
             modelBuilder.Entity("APDPAssignment.Models.Lecturer", b =>
@@ -216,7 +169,6 @@ namespace APDPAssignment.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("LecturerPhone")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -271,16 +223,10 @@ namespace APDPAssignment.Migrations
                     b.Property<int>("ClassroomId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("time");
 
                     b.Property<int>("LecturerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SemesterId")
                         .HasColumnType("int");
 
                     b.Property<TimeSpan>("StartTime")
@@ -294,42 +240,9 @@ namespace APDPAssignment.Migrations
 
                     b.HasIndex("ClassroomId");
 
-                    b.HasIndex("CourseId");
-
                     b.HasIndex("LecturerId");
 
-                    b.HasIndex("SemesterId");
-
                     b.ToTable("Schedules");
-                });
-
-            modelBuilder.Entity("APDPAssignment.Models.Semester", b =>
-                {
-                    b.Property<int>("SemesterId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SemesterId"));
-
-                    b.Property<string>("AcademicYear")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SemesterEndDate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SemesterName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SemesterStartDate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("SemesterId");
-
-                    b.ToTable("Semesters");
                 });
 
             modelBuilder.Entity("APDPAssignment.Models.Student", b =>
@@ -362,29 +275,28 @@ namespace APDPAssignment.Migrations
                     b.ToTable("Student");
                 });
 
+            modelBuilder.Entity("APDPAssignment.Models.StudentCourse", b =>
+                {
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StudentId", "CourseId");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("StudentCourses");
+                });
+
             modelBuilder.Entity("APDPAssignment.Models.AcademicRecords", b =>
                 {
-                    b.HasOne("APDPAssignment.Models.Course", "Course")
-                        .WithMany("AcademicRecords")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("APDPAssignment.Models.Semester", "Semester")
-                        .WithMany("AcademicRecords")
-                        .HasForeignKey("SemesterId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("APDPAssignment.Models.Student", "Student")
                         .WithMany("AcademicRecords")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Course");
-
-                    b.Navigation("Semester");
 
                     b.Navigation("Student");
                 });
@@ -411,44 +323,6 @@ namespace APDPAssignment.Migrations
                     b.Navigation("Account");
                 });
 
-            modelBuilder.Entity("APDPAssignment.Models.Course", b =>
-                {
-                    b.HasOne("APDPAssignment.Models.Lecturer", "Lecturer")
-                        .WithMany("Courses")
-                        .HasForeignKey("LecturerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("APDPAssignment.Models.Semester", "Semester")
-                        .WithMany("Courses")
-                        .HasForeignKey("SemesterId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Lecturer");
-
-                    b.Navigation("Semester");
-                });
-
-            modelBuilder.Entity("APDPAssignment.Models.EnrollmentList", b =>
-                {
-                    b.HasOne("APDPAssignment.Models.Course", "Course")
-                        .WithMany("EnrollmentLists")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("APDPAssignment.Models.Student", "Student")
-                        .WithMany("EnrollmentLists")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-
-                    b.Navigation("Student");
-                });
-
             modelBuilder.Entity("APDPAssignment.Models.Lecturer", b =>
                 {
                     b.HasOne("APDPAssignment.Models.Account", "Account")
@@ -468,31 +342,15 @@ namespace APDPAssignment.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("APDPAssignment.Models.Course", "Course")
-                        .WithMany("Schedules")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("APDPAssignment.Models.Lecturer", "Lecturer")
                         .WithMany("Schedules")
                         .HasForeignKey("LecturerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("APDPAssignment.Models.Semester", "Semester")
-                        .WithMany("Schedules")
-                        .HasForeignKey("SemesterId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Classroom");
 
-                    b.Navigation("Course");
-
                     b.Navigation("Lecturer");
-
-                    b.Navigation("Semester");
                 });
 
             modelBuilder.Entity("APDPAssignment.Models.Student", b =>
@@ -504,6 +362,25 @@ namespace APDPAssignment.Migrations
                         .IsRequired();
 
                     b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("APDPAssignment.Models.StudentCourse", b =>
+                {
+                    b.HasOne("APDPAssignment.Models.Course", "Course")
+                        .WithMany("StudentCourses")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("APDPAssignment.Models.Student", "Student")
+                        .WithMany("StudentCourses")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("APDPAssignment.Models.Account", b =>
@@ -525,17 +402,11 @@ namespace APDPAssignment.Migrations
 
             modelBuilder.Entity("APDPAssignment.Models.Course", b =>
                 {
-                    b.Navigation("AcademicRecords");
-
-                    b.Navigation("EnrollmentLists");
-
-                    b.Navigation("Schedules");
+                    b.Navigation("StudentCourses");
                 });
 
             modelBuilder.Entity("APDPAssignment.Models.Lecturer", b =>
                 {
-                    b.Navigation("Courses");
-
                     b.Navigation("Schedules");
                 });
 
@@ -544,20 +415,11 @@ namespace APDPAssignment.Migrations
                     b.Navigation("Accounts");
                 });
 
-            modelBuilder.Entity("APDPAssignment.Models.Semester", b =>
-                {
-                    b.Navigation("AcademicRecords");
-
-                    b.Navigation("Courses");
-
-                    b.Navigation("Schedules");
-                });
-
             modelBuilder.Entity("APDPAssignment.Models.Student", b =>
                 {
                     b.Navigation("AcademicRecords");
 
-                    b.Navigation("EnrollmentLists");
+                    b.Navigation("StudentCourses");
                 });
 #pragma warning restore 612, 618
         }

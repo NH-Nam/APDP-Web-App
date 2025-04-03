@@ -9,8 +9,5 @@ namespace APDPAssignment.Repositories
         bool AddLecturer(Lecturer lecturer);
         bool UpdateLecturer(Lecturer lecturer);
         bool DeleteLecturer(int lecturerId);
-
-        // New method to update academic record for a student in a course
-        bool UpdateStudentScore(int studentId, int courseId, string grade, string status);
     }
 }

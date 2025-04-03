@@ -20,7 +20,7 @@ namespace APDPAssignment.Repositories
             }
             catch
             {
-                return null;
+                return Enumerable.Empty<Course>();
             }
         }
 
@@ -50,7 +50,18 @@ namespace APDPAssignment.Repositories
             }
         }
 
-        public bool UpdateCourse(Course course)
+        public Course GetCourseByNameAndDescription(string courseName, string courseDescription)
+        {
+            try
+            {
+                return _context.Course.FirstOrDefault(c => c.CourseName == courseName && c.CourseDescription == courseDescription);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        public bool EditCourse(Course course)
         {
             try
             {
@@ -68,10 +79,14 @@ namespace APDPAssignment.Repositories
         {
             try
             {
-                var course = _context.Course.Find(courseId);
-                _context.Course.Remove(course);
-                _context.SaveChanges();
-                return true;
+                var course = _context.Course.Find(courseId); 
+                if (course != null)
+                {
+                    _context.Course.Remove(course);
+                    _context.SaveChanges();
+                    return true;
+                }
+                return false;
             }
             catch
             {

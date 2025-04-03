@@ -1,6 +1,9 @@
 ﻿using APDPAssignment.Models;
 using APDPAssignment.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 
 namespace APDPAssignment.Controllers
 {
@@ -12,6 +15,10 @@ namespace APDPAssignment.Controllers
         {
             _accountService = accountService;
         }
+
+        //public AccountController()
+        //{
+        //}
 
         [HttpGet]
         public IActionResult Register()
@@ -55,7 +62,7 @@ namespace APDPAssignment.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(string username, string password)
+        public async Task<IActionResult> Login(string username, string password)
         {
             try
             {
@@ -65,13 +72,34 @@ namespace APDPAssignment.Controllers
                     if (result)
                     {
                         var role = _accountService.GetUserRole(username);
+                        var account = _accountService.GetAccountByUsername(username);
+
+                        var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name, username),
+                            new Claim(ClaimTypes.NameIdentifier, account.AccountId.ToString()),
+                            new Claim(ClaimTypes.Role, role)
+                        };
+
+                        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        var authProperties = new AuthenticationProperties();
+
+                        await HttpContext.SignInAsync(
+                            CookieAuthenticationDefaults.AuthenticationScheme,
+                            new ClaimsPrincipal(claimsIdentity),
+                            authProperties);
+
                         if (role == "Admin")
                         {
-                            return View("CourseManagement", "Course");
+                            return RedirectToAction("CourseManagement", "Course");
                         }
-                        else
+                        else if (role == "Lecturer")
                         {
-                            return View("Index", "Home");
+                            return RedirectToAction("CourseManagement", "Course");
+                        }
+                        else if (role == "Student")
+                        {
+                            return RedirectToAction("MyAcademicInfo", "Student");
                         }
                     }
                     ModelState.AddModelError("", "Login failed. Please check your username and password.");
@@ -83,6 +111,13 @@ namespace APDPAssignment.Controllers
                 ModelState.AddModelError("", "An error occurred: " + ex.Message);
                 return View();
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login");
         }
     }
 }

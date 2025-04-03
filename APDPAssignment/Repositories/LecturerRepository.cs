@@ -68,30 +68,5 @@ namespace APDPAssignment.Repositories
                 return false;
             }
         }
-
-        // New method to update academic record for a student in a course
-        public bool UpdateStudentScore(int studentId, int courseId, string grade, string status)
-        {
-            try
-            {
-                var academicRecord = _context.AcademicRecords
-                    .FirstOrDefault(ar => ar.StudentId == studentId && ar.CourseId == courseId);
-
-                if (academicRecord == null)
-                {
-                    return false;
-                }
-
-                academicRecord.grade = grade;
-                academicRecord.status = status;
-                _context.AcademicRecords.Update(academicRecord);
-                _context.SaveChanges();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
     }
 }

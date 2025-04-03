@@ -7,7 +7,8 @@ namespace APDPAssignment.Repositories
         IEnumerable<Course> GetAllCourses();
         Course GetCourseById(int courseId);
         bool AddCourse(Course course);
-        bool UpdateCourse(Course course);
+        bool EditCourse(Course course);
         bool DeleteCourse(int courseId);
+        Course GetCourseByNameAndDescription(string courseName, string courseDescription);
     }
 }

@@ -1,16 +1,21 @@
 ﻿using APDPAssignment.Models;
 using APDPAssignment.Services;
+using APDPAssignment.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace APDPAssignment.Controllers
 {
     public class CourseController : Controller
     {
         private readonly ICourseService _courseService;
+        private readonly IStudentService _studentService;
 
-        public CourseController(ICourseService courseService)
+
+        public CourseController(ICourseService courseService, IStudentService studentService)
         {
             _courseService = courseService;
+            _studentService = studentService;
         }
 
         [HttpGet]
@@ -39,13 +44,14 @@ namespace APDPAssignment.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult CreateCourse()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(Course course)
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateCourse(Course course)
         {
             try
             {
@@ -54,20 +60,29 @@ namespace APDPAssignment.Controllers
                     var success = _courseService.AddCourse(course);
                     if (success)
                     {
-                        return RedirectToAction("Index");
+                        return RedirectToAction("CourseManagement");
                     }
                     ModelState.AddModelError(string.Empty, "Failed to create course.");
                 }
+
+                foreach (var modelState in ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        Console.WriteLine(error.ErrorMessage);
+                    }
+                }
+
                 return View(course);
             }
             catch
             {
-                return View();
+                return View(course);
             }
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public IActionResult EditCourse(int id)
         {
             var course = _courseService.GetCourseById(id);
             if (course == null)
@@ -78,7 +93,8 @@ namespace APDPAssignment.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Course course)
+        [ValidateAntiForgeryToken]
+        public IActionResult EditCourse(Course course)
         {
             try
             {
@@ -87,7 +103,7 @@ namespace APDPAssignment.Controllers
                     var success = _courseService.EditCourse(course);
                     if (success)
                     {
-                        return RedirectToAction("Index");
+                        return RedirectToAction("CourseManagement");
                     }
                     ModelState.AddModelError(string.Empty, "Failed to update course.");
                 }
@@ -95,64 +111,81 @@ namespace APDPAssignment.Controllers
             }
             catch
             {
-                return View();
+                return View(course);
             }
         }
 
-        [HttpGet]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
-        {
-            var course = _courseService.GetCourseById(id);
-            if (course == null)
-            {
-                return NotFound();
-            }
-            return View(course);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeleteConfirmed(int id)
         {
             try
             {
                 var success = _courseService.DeleteCourse(id);
                 if (success)
                 {
-                    return RedirectToAction("Index");
+                    return RedirectToAction("CourseManagement");
                 }
                 ModelState.AddModelError(string.Empty, "Failed to delete course.");
-                return View();
+                return RedirectToAction("CourseManagement");
             }
             catch
             {
-                return View();
+                return RedirectToAction("CourseManagement");
             }
         }
 
         [HttpGet]
-        public IActionResult Assign(int courseId)
+        public IActionResult CourseManagement()
         {
-            ViewBag.CourseId = courseId;
-            return View();
+            var courses = _courseService.GetAllCourses();
+            return View(courses);
+        }
+
+        private AssignCourseViewModel CreateAssignCourseViewModel()
+        {
+            return new AssignCourseViewModel
+            {
+                Students = _studentService.GetAllStudents().Select(s => new SelectListItem
+                {
+                    Value = s.StudentId.ToString(),
+                    Text = s.StudentName
+                }),
+                Courses = _courseService.GetAllCourses().Select(c => new SelectListItem
+                {
+                    Value = c.CourseId.ToString(),
+                    Text = c.CourseName
+                })
+            };
+        }
+
+        [HttpGet]
+        public IActionResult AssignCourse()
+        {
+            var model = CreateAssignCourseViewModel();
+            return View(model);
         }
 
         [HttpPost]
-        public IActionResult Assign(int courseId, int studentId)
+        [ValidateAntiForgeryToken]
+        public IActionResult AssignCourse(AssignCourseViewModel model)
         {
-            try
+            if (model.StudentId.HasValue && model.CourseId.HasValue)
             {
-                var success = _courseService.AssignCourseToStudent(courseId, studentId);
+                var success = _studentService.AssignCourseToStudent(model.StudentId.Value, model.CourseId.Value);
                 if (success)
                 {
-                    return RedirectToAction("Details", new { id = courseId });
+                    return RedirectToAction("CourseManagement");
                 }
-                ModelState.AddModelError(string.Empty, "Failed to assign course to student.");
-                return View();
+                ModelState.AddModelError(string.Empty, "Failed to assign course.");
             }
-            catch
+            else
             {
-                return View();
+                ModelState.AddModelError(string.Empty, "Student and Course are required.");
             }
+
+            model = CreateAssignCourseViewModel();
+            return View(model);
         }
     }
 }

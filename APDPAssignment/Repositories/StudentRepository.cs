@@ -13,7 +13,17 @@ namespace APDPAssignment.Repositories
             _context = context;
         }
 
-        public IEnumerable<Student> Students => _context.Student.ToList();
+        public IEnumerable<Student> GetAllStudents()
+        {
+            try
+            {
+                return _context.Student.ToList();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
 
         public Student GetStudentById(int studentId)
         {
@@ -70,23 +80,6 @@ namespace APDPAssignment.Repositories
             }
         }
 
-        // New method to get courses for a student
-        public IEnumerable<Course> GetCoursesByStudentId(int studentId)
-        {
-            try
-            {
-                return _context.EnrollmentList
-                    .Where(e => e.StudentId == studentId)
-                    .Include(e => e.Course)
-                    .Select(e => e.Course)
-                    .ToList();
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
         // New method to get academic records for a student
         public IEnumerable<AcademicRecords> GetAcademicRecordsByStudentId(int studentId)
         {
@@ -102,21 +95,23 @@ namespace APDPAssignment.Repositories
             }
         }
 
-        // New method to get schedules for a student
-        public IEnumerable<Schedule> GetSchedulesByStudentId(int studentId)
+        public bool AssignCourseToStudent(int studentId, int courseId)
         {
             try
             {
-                return _context.EnrollmentList
-                    .Where(e => e.StudentId == studentId)
-                    .Include(e => e.Course)
-                    .ThenInclude(c => c.Schedules)
-                    .SelectMany(e => e.Course.Schedules)
-                    .ToList();
+                var studentCourse = new StudentCourse
+                {
+                    StudentId = studentId,
+                    CourseId = courseId
+                };
+
+                _context.StudentCourses.Add(studentCourse);
+                _context.SaveChanges();
+                return true;
             }
             catch (Exception)
             {
-                return null;
+                return false;
             }
         }
     }
