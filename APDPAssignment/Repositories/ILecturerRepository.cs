@@ -4,7 +4,7 @@ namespace APDPAssignment.Repositories
 {
     public interface ILecturerRepository
     {
-        IEnumerable<Lecturer> Lecturers { get; }
+        IEnumerable<Lecturer> GetAllLecturers();
         Lecturer GetLecturerById(int lecturerId);
         bool AddLecturer(Lecturer lecturer);
         bool UpdateLecturer(Lecturer lecturer);

@@ -12,7 +12,17 @@ namespace APDPAssignment.Repositories
             _context = context;
         }
 
-        public IEnumerable<Classroom> Classroom => _context.Classroom.ToList();
+        public IEnumerable<Classroom> GetAllClassroom()
+        {
+            try
+            {
+                return _context.Classroom.ToList();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
 
         public Classroom GetClassroomById(int classroomId)
         {

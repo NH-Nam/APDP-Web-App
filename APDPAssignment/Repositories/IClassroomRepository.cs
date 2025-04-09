@@ -4,7 +4,7 @@ namespace APDPAssignment.Repositories
 {
     public interface IClassroomRepository
     {
-        IEnumerable<Classroom> Classroom { get; }
+        IEnumerable<Classroom> GetAllClassroom();
         Classroom GetClassroomById(int classroomId);
         bool AddClassroom(Classroom classroom);
         bool UpdateClassroom(Classroom classroom);

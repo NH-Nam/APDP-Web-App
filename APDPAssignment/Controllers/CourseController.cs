@@ -15,6 +15,10 @@ namespace APDPAssignment.Controllers
             _courseFacade = courseFacade;
         }
 
+        public CourseController()
+        {
+        }
+
         [HttpGet]
         public IActionResult Index()
         {
