@@ -12,7 +12,17 @@ namespace APDPAssignment.Repositories
             _context = context;
         }
 
-        public IEnumerable<Schedule> Schedules => _context.Schedules.ToList();
+        public IEnumerable<Schedule> GetAllSchedules()
+        {
+            try
+            {
+                return _context.Schedules.ToList();
+            }
+            catch
+            {
+                return null;
+            }
+        }
 
         public Schedule GetScheduleById(int scheduleId)
         {

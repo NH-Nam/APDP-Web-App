@@ -12,7 +12,17 @@ namespace APDPAssignment.Repositories
             _context = context;
         }
 
-        public IEnumerable<Lecturer> Lecturers => _context.Lecturer.ToList();
+        public IEnumerable<Lecturer> GetAllLecturers()
+        {
+            try
+            {
+                return _context.Lecturer.ToList();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
 
         public Lecturer GetLecturerById(int lecturerId)
         {
