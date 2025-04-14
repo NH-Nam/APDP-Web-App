@@ -16,9 +16,10 @@ namespace APDPAssignment.Controllers
             _accountService = accountService;
         }
 
-        //public AccountController()
-        //{
-        //}
+        public AccountController()
+        {
+            // Default constructor for dependency injection
+        }
 
         [HttpGet]
         public IActionResult Register()

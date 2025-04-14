@@ -15,6 +15,11 @@ namespace APDPAssignment.Controllers
             _courseFacade = courseFacade;
         }
 
+        public CourseController()
+        {
+            // Default constructor for dependency injection
+        }
+
         [HttpGet]
         public IActionResult Index()
         {
